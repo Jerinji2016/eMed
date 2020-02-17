@@ -38,15 +38,14 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="550dp"
         android:orientation="horizontal"
         android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintBottom_toTopOf="@+id/signup_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.3">
+        app:layout_constraintTop_toBottomOf="@+id/imageView3">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -131,8 +130,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="text"
-                android:hint="@string/first_name" />
+                android:hint="@string/first_name"
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/first_name"
@@ -141,8 +140,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="text"
-                android:hint="@string/last_name"/>
+                android:hint="@string/last_name"
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/user_name"
@@ -151,8 +150,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="text"
-                android:hint="@string/user_id"/>
+                android:hint="@string/user_id"
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/password"
@@ -161,8 +160,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPassword"
-                android:hint="@string/password"/>
+                android:hint="@string/password"
+                android:inputType="textPassword" />
 
             <EditText
                 android:id="@+id/confirm_password"
@@ -182,8 +181,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="number"
-                android:hint="@string/age"/>
+                android:hint="@string/age"
+                android:inputType="number" />
 
             <EditText
                 android:id="@+id/email"
@@ -192,8 +191,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textEmailAddress"
-                android:hint="@string/email"/>
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
 
 
             <EditText
@@ -203,26 +202,27 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="phone"
-                android:hint="@string/phone_no"/>
+                android:hint="@string/phone_no"
+                android:inputType="phone" />
 
         </LinearLayout>
 
     </LinearLayout>
 
     <Button
-        android:background="@drawable/btn_primary_default"
-        android:textColor="#fff"
         android:id="@+id/signup_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:background="@drawable/btn_primary_default"
         android:text="Sign Up"
+        android:textColor="#fff"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.453" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.971" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
