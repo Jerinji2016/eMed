@@ -69,6 +69,7 @@
         app:layout_constraintTop_toBottomOf="@+id/sign_up"
         app:layout_constraintVertical_bias="0.426"
         app:srcCompat="@drawable/login_box_bg"
+        android:visibility="invisible"
         android:translationZ="-100dp"/>
 
     <EditText

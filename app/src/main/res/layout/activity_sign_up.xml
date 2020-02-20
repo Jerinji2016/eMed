@@ -44,8 +44,10 @@
 
         app:layout_constraintBottom_toTopOf="@+id/signup_btn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3">
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.461">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -124,7 +126,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/last_name"
+                android:id="@+id/first_name"
                 style="@style/signup_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -134,7 +136,7 @@
                 android:inputType="text" />
 
             <EditText
-                android:id="@+id/first_name"
+                android:id="@+id/last_name"
                 style="@style/signup_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -196,7 +198,7 @@
 
 
             <EditText
-                android:id="@+id/editText23"
+                android:id="@+id/phone"
                 style="@style/signup_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
