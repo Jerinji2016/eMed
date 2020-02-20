@@ -31,7 +31,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     Button signUpBtn;
 
-    boolean bool;
+    boolean bool = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,46 +52,41 @@ public class SignUpActivity extends AppCompatActivity {
 
         signUpBtn = findViewById(R.id.signup_btn);
         signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String password = pass.getText().toString();
-                String confirm_password = cpass.getText().toString();
+        @Override
+        public void onClick(View v) {
+            String password = pass.getText().toString();
+            String confirm_password = cpass.getText().toString();
 
-                if(password.equals(confirm_password)) {
-                    if (checkEmpty()) {
+            if(password.equals(confirm_password)) {
+                if (checkEmpty()) {
 //                        Log.d("Check", ""+checkEmpty());
-                        checkUserAlreadyExist("tester");
-                        Log.d("Result", ""+ bool);
-                        if(!bool) {
-                            signUp_member.setFirst_name(fname.getText().toString().trim());
-                            signUp_member.setLast_name(lname.getText().toString().trim());
-                            signUp_member.setUser_name(uname.getText().toString().trim());
-                            signUp_member.setPassword(pass.getText().toString().trim());
-                            signUp_member.setEmail(email.getText().toString().trim());
+                    checkUserAlreadyExist("tester");
+                    Log.d("Result", ""+ bool);
+                    if(!bool) {
+                        signUp_member.setFirst_name(fname.getText().toString().trim());
+                        signUp_member.setLast_name(lname.getText().toString().trim());
+                        signUp_member.setUser_name(uname.getText().toString().trim());
+                        signUp_member.setPassword(pass.getText().toString().trim());
+                        signUp_member.setEmail(email.getText().toString().trim());
 
-                            signUp_member.setAge(Integer.parseInt(user_age.getText().toString().trim()));
-                            signUp_member.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
+                        signUp_member.setAge(Integer.parseInt(user_age.getText().toString().trim()));
+                        signUp_member.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
 
-                            reff.child(signUp_member.getUser_name()).setValue(signUp_member);
+                        reff.child(signUp_member.getUser_name()).setValue(signUp_member);
 
-                            Toast.makeText(SignUpActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(SignUpActivity.this, "Hopefully", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Snackbar snackbar = Snackbar
-                                    .make(findViewById(R.id.signUp_layout), "Username Already Exist", Snackbar.LENGTH_LONG);
-                            snackbar.show();
-                        }
+                        Toast.makeText(SignUpActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, "Hopefully", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         uname.setText("");
                     }
                 }
-                else {
-                    Snackbar snackbar = Snackbar.make(findViewById(R.id.signUp_layout), "Password doesn't Match", Snackbar.LENGTH_LONG);
-                    snackbar.show();
-                }
             }
+            else {
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.signUp_layout), "Password doesn't Match", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        }
         });
     }
 
@@ -119,14 +114,15 @@ public class SignUpActivity extends AppCompatActivity {
 
                if(dataSnapshot.child(user).getValue() != null) {
                    Log.d("Here", "True");
-                   bool = true;
+                   setBoolVal(true);
+
                }
                else {
                    Snackbar snackbar = Snackbar
                                 .make(findViewById(R.id.signUp_layout), "Username Available", Snackbar.LENGTH_LONG);
                         snackbar.show();
                    Log.d("Here", "False");
-                   bool = false;
+                   setBoolVal(false);
                }
             }
 
@@ -135,5 +131,8 @@ public class SignUpActivity extends AppCompatActivity {
                 Log.d("Executive Order", "The read failed: " + databaseError.getDetails());
             }
         });
+    }
+    public void setBoolVal(boolean b) {
+        bool = b;
     }
 }
