@@ -1,65 +1,70 @@
 package com.dev.emed;
 
 public class SignUp_Member {
-    private String fname, lname, uname, password, cpass, email;
-    private int age, phone;
+    private String First_name;
+    private String Last_name;
+    private String User_name;
+    private String Password;
+    private String Email;
+    private int Age;
+    private long Phone_no;
 
-    public SignUp_Member() {
+    public String getFirst_name() {
+        return First_name;
     }
 
-    public String getFname() {
-        return fname;
+    public void setFirst_name(String first_name) {
+        First_name = first_name;
     }
 
-    public void setFname(String fname) {
-        this.fname = fname;
+    public String getLast_name() {
+        return Last_name;
     }
 
-    public String getLname() {
-        return lname;
+    public void setLast_name(String last_name) {
+        Last_name = last_name;
     }
 
-    public void setLname(String lname) {
-        this.lname = lname;
+    public String getUser_name() {
+        return User_name;
     }
 
-    public String getUname() {
-        return uname;
-    }
-
-    public void setUname(String uname) {
-        this.uname = uname;
+    public void setUser_name(String user_name) {
+        User_name = user_name;
     }
 
     public String getPassword() {
-        return password;
+        return Password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        Password = password;
     }
 
     public String getEmail() {
-        return email;
+        return Email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        Email = email;
     }
 
     public int getAge() {
-        return age;
+        return Age;
     }
 
     public void setAge(int age) {
-        this.age = age;
+        Age = age;
     }
 
-    public int getPhone() {
-        return phone;
+    public long getPhone_no() {
+        return Phone_no;
     }
 
-    public void setPhone(int phone) {
-        this.phone = phone;
+    public void setPhone_no(long phone_no) {
+        Phone_no = phone_no;
+    }
+
+    public SignUp_Member() {
     }
 }

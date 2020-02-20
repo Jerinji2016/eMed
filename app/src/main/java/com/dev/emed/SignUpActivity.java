@@ -1,15 +1,21 @@
 package com.dev.emed;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText fname;
@@ -30,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        signUp_member = new SignUp_Member();
         reff = FirebaseDatabase.getInstance().getReference().child("SignUp_Member");
 
         fname = findViewById(R.id.first_name);
@@ -42,29 +49,65 @@ public class SignUpActivity extends AppCompatActivity {
         phone = findViewById(R.id.phone);
 
         signUpBtn = findViewById(R.id.signup_btn);
-
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String password = pass.getText().toString(),
-                        confirm_password = cpass.getText().toString();
+                String password = pass.getText().toString();
+                String confirm_password = cpass.getText().toString();
 
-                if(password == confirm_password) {
+                if(password.equals(confirm_password)) {
+                    if (checkEmpty()) {
+                        signUp_member.setFirst_name(fname.getText().toString().trim());
+                        signUp_member.setLast_name(lname.getText().toString().trim());
+                        signUp_member.setUser_name(uname.getText().toString().trim());
+                        signUp_member.setPassword(pass.getText().toString().trim());
+                        signUp_member.setEmail(email.getText().toString().trim());
 
-                    int age = Integer.parseInt(user_age.getText().toString().trim()),
-                            phone_no = Integer.parseInt(phone.getText().toString().trim());
+                        signUp_member.setAge(Integer.parseInt(user_age.getText().toString().trim()));
+                        signUp_member.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
 
-                    signUp_member.setFname(fname.getText().toString().trim());
-                    signUp_member.setLname(lname.getText().toString().trim());
-                    signUp_member.setUname(uname.getText().toString().trim());
-                    signUp_member.setPassword(pass.getText().toString().trim());
-                    signUp_member.setEmail(email.getText().toString().trim());
-                    signUp_member.setAge(age);
-                    signUp_member.setPhone(phone_no);
+                        reff.push().setValue(signUp_member);
+                        Toast.makeText(SignUpActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, "Hopefully", Toast.LENGTH_SHORT).show();
 
-                    reff.push().setValue(signUp_member);
-                    Toast.makeText(SignUpActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
+                    }
                 }
+                else {
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.signUp_layout), "Password doesn't Match", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+            }
+        });
+    }
+
+    // Function to Check if any field is Empty
+    public boolean checkEmpty() {
+        if(fname.getText().toString().isEmpty() || lname.getText().toString().isEmpty() ||
+                uname.getText().toString().isEmpty() || pass.getText().toString().isEmpty() ||
+                cpass.getText().toString().isEmpty() || email.getText().toString().isEmpty() ||
+                user_age.getText().toString().isEmpty() || phone.getText().toString().isEmpty()) {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.signUp_layout), "Please do not leave any field Empty", Snackbar.LENGTH_INDEFINITE);
+            snackbar.show();
+
+            return false;
+        }
+        return true;
+    }
+
+    //  Check if User Name already Exist in User Table
+    public void checkUserAlreadyExist() {
+        reff = FirebaseDatabase.getInstance().getReference();
+        reff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Database Connectivity Error", Toast.LENGTH_SHORT).show();
             }
         });
     }
