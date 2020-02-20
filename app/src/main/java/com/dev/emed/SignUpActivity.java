@@ -31,13 +31,15 @@ public class SignUpActivity extends AppCompatActivity {
 
     Button signUpBtn;
 
+    boolean bool;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
         signUp_member = new SignUp_Member();
-        reff = FirebaseDatabase.getInstance().getReference().child("SignUp_Member");
+        reff = FirebaseDatabase.getInstance().getReference().child("Patient");
 
         fname = findViewById(R.id.first_name);
         lname = findViewById(R.id.last_name);
@@ -57,19 +59,32 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if(password.equals(confirm_password)) {
                     if (checkEmpty()) {
-                        signUp_member.setFirst_name(fname.getText().toString().trim());
-                        signUp_member.setLast_name(lname.getText().toString().trim());
-                        signUp_member.setUser_name(uname.getText().toString().trim());
-                        signUp_member.setPassword(pass.getText().toString().trim());
-                        signUp_member.setEmail(email.getText().toString().trim());
+//                        Log.d("Check", ""+checkEmpty());
+                        checkUserAlreadyExist("tester");
+                        Log.d("Result", ""+ bool);
+                        if(!bool) {
+                            signUp_member.setFirst_name(fname.getText().toString().trim());
+                            signUp_member.setLast_name(lname.getText().toString().trim());
+                            signUp_member.setUser_name(uname.getText().toString().trim());
+                            signUp_member.setPassword(pass.getText().toString().trim());
+                            signUp_member.setEmail(email.getText().toString().trim());
 
-                        signUp_member.setAge(Integer.parseInt(user_age.getText().toString().trim()));
-                        signUp_member.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
+                            signUp_member.setAge(Integer.parseInt(user_age.getText().toString().trim()));
+                            signUp_member.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
 
-                        reff.push().setValue(signUp_member);
-                        Toast.makeText(SignUpActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(SignUpActivity.this, "Hopefully", Toast.LENGTH_SHORT).show();
+                            reff.child(signUp_member.getUser_name()).setValue(signUp_member);
 
+                            Toast.makeText(SignUpActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "Hopefully", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Snackbar snackbar = Snackbar
+                                    .make(findViewById(R.id.signUp_layout), "Username Already Exist", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                        }
+                    }
+                    else {
+                        uname.setText("");
                     }
                 }
                 else {
@@ -95,19 +110,29 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     //  Check if User Name already Exist in User Table
-    public void checkUserAlreadyExist() {
-        reff = FirebaseDatabase.getInstance().getReference();
-        reff.addValueEventListener(new ValueEventListener() {
+    public void checkUserAlreadyExist(final String user) {
+        reff = FirebaseDatabase.getInstance().getReference().child("Patient");
+
+        reff.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
 
-                }
+               if(dataSnapshot.child(user).getValue() != null) {
+                   Log.d("Here", "True");
+                   bool = true;
+               }
+               else {
+                   Snackbar snackbar = Snackbar
+                                .make(findViewById(R.id.signUp_layout), "Username Available", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                   Log.d("Here", "False");
+                   bool = false;
+               }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "Database Connectivity Error", Toast.LENGTH_SHORT).show();
+                Log.d("Executive Order", "The read failed: " + databaseError.getDetails());
             }
         });
     }
