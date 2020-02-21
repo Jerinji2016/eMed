@@ -14,12 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".SelectUserTypeActivity"></activity>
         <activity android:name=".DoctorActivity" />
         <activity android:name=".PatientActivity" />
-        <activity android:name=".SignUpActivity" />
+        <activity android:name=".SignUpPatientActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -37,9 +37,15 @@
     </style>
 
     <style name="doc_profile_text">
-        <item name="android:textSize">15sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="user_select_btn">
+        <item name="android:background">@drawable/btn_primary_default</item>
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
     </style>
 </resources>
