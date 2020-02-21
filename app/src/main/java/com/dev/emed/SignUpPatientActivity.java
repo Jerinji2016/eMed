@@ -17,7 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpPatientActivity extends AppCompatActivity {
     EditText fname;
     EditText lname;
     EditText uname;
@@ -36,7 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_sign_up_patient);
 
         signUp_member = new SignUp_Member();
 
@@ -132,8 +132,8 @@ public class SignUpActivity extends AppCompatActivity {
 
             reff.child(signUp_member.getUser_name()).setValue(signUp_member);
 
-            Toast.makeText(SignUpActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
-            Toast.makeText(SignUpActivity.this, "Hopefully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUpPatientActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUpPatientActivity.this, "Hopefully", Toast.LENGTH_SHORT).show();
 
             //  Should redirect to another activity
             //  Maintain session
