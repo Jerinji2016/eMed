@@ -39,7 +39,6 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         signUp_member = new SignUp_Member();
-        reff = FirebaseDatabase.getInstance().getReference().child("Patient");
 
         fname = findViewById(R.id.first_name);
         lname = findViewById(R.id.last_name);
@@ -57,34 +56,14 @@ public class SignUpActivity extends AppCompatActivity {
             String password = pass.getText().toString();
             String confirm_password = cpass.getText().toString();
 
-            if(password.equals(confirm_password)) {
-                if (checkEmpty()) {
-//                        Log.d("Check", ""+checkEmpty());
-                    checkUserAlreadyExist("tester");
-                    Log.d("Result", ""+ bool);
-                    if(!bool) {
-                        signUp_member.setFirst_name(fname.getText().toString().trim());
-                        signUp_member.setLast_name(lname.getText().toString().trim());
-                        signUp_member.setUser_name(uname.getText().toString().trim());
-                        signUp_member.setPassword(pass.getText().toString().trim());
-                        signUp_member.setEmail(email.getText().toString().trim());
-
-                        signUp_member.setAge(Integer.parseInt(user_age.getText().toString().trim()));
-                        signUp_member.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
-
-                        reff.child(signUp_member.getUser_name()).setValue(signUp_member);
-
-                        Toast.makeText(SignUpActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(SignUpActivity.this, "Hopefully", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        uname.setText("");
-                    }
+            if (checkEmpty()) {
+                if(password.equals(confirm_password)) {
+                    checkUserAlreadyExist(uname.getText().toString());
                 }
-            }
-            else {
-                Snackbar snackbar = Snackbar.make(findViewById(R.id.signUp_layout), "Password doesn't Match", Snackbar.LENGTH_LONG);
-                snackbar.show();
+                else {
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.signUp_layout), "Password doesn't Match", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
             }
         }
         });
@@ -115,12 +94,11 @@ public class SignUpActivity extends AppCompatActivity {
                if(dataSnapshot.child(user).getValue() != null) {
                    Log.d("Here", "True");
                    setBoolVal(true);
-
                }
                else {
                    Snackbar snackbar = Snackbar
                                 .make(findViewById(R.id.signUp_layout), "Username Available", Snackbar.LENGTH_LONG);
-                        snackbar.show();
+                   snackbar.show();
                    Log.d("Here", "False");
                    setBoolVal(false);
                }
@@ -134,5 +112,37 @@ public class SignUpActivity extends AppCompatActivity {
     }
     public void setBoolVal(boolean b) {
         bool = b;
+        signUpUser();
+    }
+
+    public void signUpUser() {
+        Log.d("Result", ""+ bool);
+
+        if(!bool) {
+            reff = FirebaseDatabase.getInstance().getReference().child("Patient");
+
+            signUp_member.setFirst_name(fname.getText().toString().trim());
+            signUp_member.setLast_name(lname.getText().toString().trim());
+            signUp_member.setUser_name(uname.getText().toString().trim());
+            signUp_member.setPassword(pass.getText().toString().trim());
+            signUp_member.setEmail(email.getText().toString().trim());
+
+            signUp_member.setAge(Integer.parseInt(user_age.getText().toString().trim()));
+            signUp_member.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
+
+            reff.child(signUp_member.getUser_name()).setValue(signUp_member);
+
+            Toast.makeText(SignUpActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUpActivity.this, "Hopefully", Toast.LENGTH_SHORT).show();
+
+            //  Should redirect to another activity
+            //  Maintain session
+        }
+        else {
+            uname.setText("");
+            Snackbar snackbar = Snackbar
+                    .make(findViewById(R.id.signUp_layout), "Username Not Available", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
     }
 }
