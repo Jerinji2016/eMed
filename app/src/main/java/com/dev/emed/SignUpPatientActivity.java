@@ -121,22 +121,34 @@ public class SignUpPatientActivity extends AppCompatActivity {
         if(!bool) {
             reff = FirebaseDatabase.getInstance().getReference().child("Patient");
 
-            signUp_member.setFirst_name(fname.getText().toString().trim());
-            signUp_member.setLast_name(lname.getText().toString().trim());
-            signUp_member.setUser_name(uname.getText().toString().trim());
-            signUp_member.setPassword(pass.getText().toString().trim());
-            signUp_member.setEmail(email.getText().toString().trim());
+            reff.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    int num = (int) dataSnapshot.getChildrenCount();
+                    String pid = "PT00" + num;
+                    signUp_member.setFirst_name(fname.getText().toString().trim());
+                    signUp_member.setLast_name(lname.getText().toString().trim());
+                    signUp_member.setUser_name(uname.getText().toString().trim());
+                    signUp_member.setPassword(pass.getText().toString().trim());
+                    signUp_member.setEmail(email.getText().toString().trim());
+                    signUp_member.setMember_ID(pid);
 
-            signUp_member.setAge(Integer.parseInt(user_age.getText().toString().trim()));
-            signUp_member.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
+                    signUp_member.setAge(Integer.parseInt(user_age.getText().toString().trim()));
+                    signUp_member.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
 
-            reff.child(signUp_member.getUser_name()).setValue(signUp_member);
+                    reff.child(signUp_member.getUser_name()).setValue(signUp_member);
 
-            Toast.makeText(SignUpPatientActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
-            Toast.makeText(SignUpPatientActivity.this, "Hopefully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpPatientActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
 
-            //  Should redirect to another activity
-            //  Maintain session
+                    //  Should redirect to another activity
+                    //  Maintain session
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("Error", "DB-Error"+databaseError.getDetails());
+                }
+            });
         }
         else {
             uname.setText("");

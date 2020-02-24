@@ -8,6 +8,15 @@ public class SignUp_Member {
     private String Email;
     private int Age;
     private long Phone_no;
+    private String Member_ID;
+
+    public String getMember_ID() {
+        return Member_ID;
+    }
+
+    public void setMember_ID(String member_ID) {
+        Member_ID = member_ID;
+    }
 
     public String getFirst_name() {
         return First_name;
