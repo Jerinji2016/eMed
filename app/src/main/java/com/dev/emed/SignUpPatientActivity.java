@@ -27,7 +27,7 @@ public class SignUpPatientActivity extends AppCompatActivity {
     EditText email;
     EditText phone;
     DatabaseReference reff;
-    SignUp_Member signUp_member;
+    SignUp_Patient signUp_patient;
 
     Button signUpBtn;
 
@@ -38,7 +38,7 @@ public class SignUpPatientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_patient);
 
-        signUp_member = new SignUp_Member();
+        signUp_patient = new SignUp_Patient();
 
         fname = findViewById(R.id.first_name);
         lname = findViewById(R.id.last_name);
@@ -126,17 +126,17 @@ public class SignUpPatientActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     int num = (int) dataSnapshot.getChildrenCount();
                     String pid = "PT00" + num;
-                    signUp_member.setFirst_name(fname.getText().toString().trim());
-                    signUp_member.setLast_name(lname.getText().toString().trim());
-                    signUp_member.setUser_name(uname.getText().toString().trim());
-                    signUp_member.setPassword(pass.getText().toString().trim());
-                    signUp_member.setEmail(email.getText().toString().trim());
-                    signUp_member.setMember_ID(pid);
+                    signUp_patient.setFirst_name(fname.getText().toString().trim());
+                    signUp_patient.setLast_name(lname.getText().toString().trim());
+                    signUp_patient.setUser_name(uname.getText().toString().trim());
+                    signUp_patient.setPassword(pass.getText().toString().trim());
+                    signUp_patient.setEmail(email.getText().toString().trim());
+                    signUp_patient.setMember_ID(pid);
 
-                    signUp_member.setAge(Integer.parseInt(user_age.getText().toString().trim()));
-                    signUp_member.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
+                    signUp_patient.setAge(Integer.parseInt(user_age.getText().toString().trim()));
+                    signUp_patient.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
 
-                    reff.child(signUp_member.getUser_name()).setValue(signUp_member);
+                    reff.child(signUp_patient.getUser_name()).setValue(signUp_patient);
 
                     Toast.makeText(SignUpPatientActivity.this, "You are all Signed Up", Toast.LENGTH_SHORT).show();
 

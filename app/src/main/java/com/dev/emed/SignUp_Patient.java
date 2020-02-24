@@ -1,6 +1,6 @@
 package com.dev.emed;
 
-public class SignUp_Member {
+public class SignUp_Patient {
     private String First_name;
     private String Last_name;
     private String User_name;
@@ -74,6 +74,6 @@ public class SignUp_Member {
         Phone_no = phone_no;
     }
 
-    public SignUp_Member() {
+    public SignUp_Patient() {
     }
 }
