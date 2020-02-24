@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".SelectUserTypeActivity"></activity>
+        <activity android:name=".SignUp_Doctor"></activity>
+        <activity android:name=".SelectUserTypeActivity" />
         <activity android:name=".DoctorActivity" />
         <activity android:name=".PatientActivity" />
         <activity android:name=".SignUpPatientActivity" />

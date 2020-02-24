@@ -21,7 +21,8 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         docBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "We are working on it.. ", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(SelectUserTypeActivity.this, SignUp_Doctor.class);
+                startActivity(i);
             }
         });
 
