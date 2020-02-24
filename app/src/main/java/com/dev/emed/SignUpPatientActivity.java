@@ -17,6 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class SignUpPatientActivity extends AppCompatActivity {
     EditText fname;
     EditText lname;
@@ -129,12 +132,28 @@ public class SignUpPatientActivity extends AppCompatActivity {
                     signUp_patient.setFirst_name(fname.getText().toString().trim());
                     signUp_patient.setLast_name(lname.getText().toString().trim());
                     signUp_patient.setUser_name(uname.getText().toString().trim());
-                    signUp_patient.setPassword(pass.getText().toString().trim());
                     signUp_patient.setEmail(email.getText().toString().trim());
                     signUp_patient.setMember_ID(pid);
-
                     signUp_patient.setAge(Integer.parseInt(user_age.getText().toString().trim()));
                     signUp_patient.setPhone_no(Long.parseLong(phone.getText().toString().trim()));
+
+                    String current_pass = pass.getText().toString().trim(), generatedHash = "";
+
+                    try {
+                        MessageDigest md = MessageDigest.getInstance("MD5");
+                        md.update(current_pass.getBytes());
+                        byte [] bytes = md.digest();
+                        StringBuilder sb = new StringBuilder();
+                        for(int i=0; i<bytes.length; i++) {
+                            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+                        }
+                        generatedHash = sb.toString();
+                    }
+                    catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+
+                    signUp_patient.setPassword(generatedHash);
 
                     reff.child(signUp_patient.getUser_name()).setValue(signUp_patient);
 
