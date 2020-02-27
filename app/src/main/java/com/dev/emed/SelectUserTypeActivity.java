@@ -21,7 +21,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         docBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(SelectUserTypeActivity.this, SignUp_Doctor.class);
+                Intent i = new Intent(SelectUserTypeActivity.this, SignUpDoctorActivity.class);
                 startActivity(i);
             }
         });
