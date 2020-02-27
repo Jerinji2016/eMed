@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,8 +35,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName"
                 android:hint="@string/first_name"
+                android:inputType="textPersonName"
                 app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
 
@@ -58,8 +58,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="@string/last_name" />
+                android:hint="@string/last_name"
+                android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
@@ -80,8 +80,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Specialisation" />
+                android:hint="Specialisation"
+                android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
@@ -102,8 +102,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Hosp. Name" />
+                android:hint="Hosp. Name"
+                android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
@@ -149,8 +149,8 @@
                 android:layout_marginRight="16dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName"
                 android:hint="@string/user_name"
+                android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>
 
@@ -176,8 +176,8 @@
                 android:layout_marginRight="16dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPassword"
                 android:hint="@string/password"
+                android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>
 
@@ -203,8 +203,8 @@
                 android:layout_marginRight="16dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPassword"
                 android:hint="@string/re_enter_password"
+                android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>
 
@@ -247,6 +247,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/doc_gender"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <RadioButton
