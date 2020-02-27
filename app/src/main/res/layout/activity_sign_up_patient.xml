@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/signUp_layout"
+    android:id="@+id/pat_signUp_layout"
     tools:context=".SignUpPatientActivity">
 
     <ImageView
@@ -43,7 +43,7 @@
         android:orientation="horizontal"
         android:padding="20dp"
 
-        app:layout_constraintBottom_toTopOf="@+id/signup_btn"
+        app:layout_constraintBottom_toTopOf="@+id/patient_signup_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -213,7 +213,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/signup_btn"
+        android:id="@+id/patient_signup_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_primary_default"

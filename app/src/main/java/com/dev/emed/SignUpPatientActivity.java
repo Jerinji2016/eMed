@@ -52,7 +52,7 @@ public class SignUpPatientActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         phone = findViewById(R.id.phone);
 
-        signUpBtn = findViewById(R.id.signup_btn);
+        signUpBtn = findViewById(R.id.patient_signup_btn);
         signUpBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -64,7 +64,7 @@ public class SignUpPatientActivity extends AppCompatActivity {
                     checkUserAlreadyExist(uname.getText().toString());
                 }
                 else {
-                    Snackbar snackbar = Snackbar.make(findViewById(R.id.signUp_layout), "Password doesn't Match", Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.pat_signUp_layout), "Password doesn't Match", Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
             }
@@ -78,7 +78,7 @@ public class SignUpPatientActivity extends AppCompatActivity {
                 uname.getText().toString().isEmpty() || pass.getText().toString().isEmpty() ||
                 cpass.getText().toString().isEmpty() || email.getText().toString().isEmpty() ||
                 user_age.getText().toString().isEmpty() || phone.getText().toString().isEmpty()) {
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.signUp_layout), "Please do not leave any field Empty", Snackbar.LENGTH_INDEFINITE);
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.pat_signUp_layout), "Please do not leave any field Empty", Snackbar.LENGTH_INDEFINITE);
             snackbar.show();
 
             return false;
@@ -100,7 +100,7 @@ public class SignUpPatientActivity extends AppCompatActivity {
                }
                else {
                    Snackbar snackbar = Snackbar
-                                .make(findViewById(R.id.signUp_layout), "Username Available", Snackbar.LENGTH_LONG);
+                                .make(findViewById(R.id.pat_signUp_layout), "Username Available", Snackbar.LENGTH_LONG);
                    snackbar.show();
                    Log.d("Here", "False");
                    setBoolVal(false);
@@ -172,7 +172,7 @@ public class SignUpPatientActivity extends AppCompatActivity {
         else {
             uname.setText("");
             Snackbar snackbar = Snackbar
-                    .make(findViewById(R.id.signUp_layout), "Username Not Available", Snackbar.LENGTH_LONG);
+                    .make(findViewById(R.id.pat_signUp_layout), "Username Not Available", Snackbar.LENGTH_LONG);
             snackbar.show();
         }
     }
