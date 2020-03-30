@@ -1,8 +1,7 @@
-package com.dev.emed;
+package com.dev.emed.signup;
 
 public class SignUp_Patient {
-    private String First_name;
-    private String Last_name;
+    private String Name;
     private String User_name;
     private String Password;
     private String Email;
@@ -18,20 +17,12 @@ public class SignUp_Patient {
         Member_ID = member_ID;
     }
 
-    public String getFirst_name() {
-        return First_name;
+    public String getName() {
+        return Name;
     }
 
-    public void setFirst_name(String first_name) {
-        First_name = first_name;
-    }
-
-    public String getLast_name() {
-        return Last_name;
-    }
-
-    public void setLast_name(String last_name) {
-        Last_name = last_name;
+    public void setName(String name) {
+        Name = name;
     }
 
     public String getUser_name() {

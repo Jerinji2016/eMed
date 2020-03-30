@@ -7,6 +7,9 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dev.emed.doctor.DoctorActivity;
+import com.dev.emed.signup.SelectUserTypeActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

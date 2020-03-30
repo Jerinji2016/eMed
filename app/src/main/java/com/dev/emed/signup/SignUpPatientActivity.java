@@ -1,4 +1,4 @@
-package com.dev.emed;
+package com.dev.emed.signup;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dev.emed.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,14 +44,14 @@ public class SignUpPatientActivity extends AppCompatActivity {
 
         signUp_patient = new SignUp_Patient();
 
-        fname = findViewById(R.id.first_name);
-        lname = findViewById(R.id.last_name);
-        uname = findViewById(R.id.user_name);
-        pass = findViewById(R.id.password);
-        cpass = findViewById(R.id.confirm_password);
-        user_age = findViewById(R.id.age);
-        email = findViewById(R.id.email);
-        phone = findViewById(R.id.phone);
+        fname = findViewById(R.id.ptn_fname);
+        lname = findViewById(R.id.ptn_lname);
+        uname = findViewById(R.id.ptn_uname);
+        pass = findViewById(R.id.ptn_password);
+        cpass = findViewById(R.id.ptn_cpass);
+        user_age = findViewById(R.id.ptn_age);
+        email = findViewById(R.id.ptn_email);
+        phone = findViewById(R.id.ptn_phone);
 
         signUpBtn = findViewById(R.id.patient_signup_btn);
         signUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -129,8 +130,7 @@ public class SignUpPatientActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     int num = (int) dataSnapshot.getChildrenCount();
                     String pid = "PT00" + num;
-                    signUp_patient.setFirst_name(fname.getText().toString().trim());
-                    signUp_patient.setLast_name(lname.getText().toString().trim());
+                    signUp_patient.setName(fname.getText().toString().trim()+ " "+lname.getText().toString().trim());
                     signUp_patient.setUser_name(uname.getText().toString().trim());
                     signUp_patient.setEmail(email.getText().toString().trim());
                     signUp_patient.setMember_ID(pid);
@@ -144,9 +144,8 @@ public class SignUpPatientActivity extends AppCompatActivity {
                         md.update(current_pass.getBytes());
                         byte [] bytes = md.digest();
                         StringBuilder sb = new StringBuilder();
-                        for(int i=0; i<bytes.length; i++) {
-                            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-                        }
+                        for (byte aByte : bytes)
+                            sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
                         generatedHash = sb.toString();
                     }
                     catch (NoSuchAlgorithmException e) {

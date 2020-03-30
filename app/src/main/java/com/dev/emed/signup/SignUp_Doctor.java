@@ -1,4 +1,4 @@
-package com.dev.emed;
+package com.dev.emed.signup;
 
 public class SignUp_Doctor {
     private String First_name;

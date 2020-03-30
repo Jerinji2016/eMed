@@ -1,8 +1,10 @@
-package com.dev.emed;
+package com.dev.emed.patient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.dev.emed.R;
 
 public class PatientActivity extends AppCompatActivity {
 

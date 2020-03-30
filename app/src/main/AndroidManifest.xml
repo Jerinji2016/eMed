@@ -14,11 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".SignUpDoctorActivity"></activity>
-        <activity android:name=".SelectUserTypeActivity" />
-        <activity android:name=".DoctorActivity" />
-        <activity android:name=".PatientActivity" />
-        <activity android:name=".SignUpPatientActivity" />
+        <activity android:name=".signup.SignUpDoctorActivity"></activity>
+        <activity android:name=".signup.SelectUserTypeActivity" />
+        <activity android:name=".doctor.DoctorActivity" />
+        <activity android:name=".patient.PatientActivity" />
+        <activity android:name=".signup.SignUpPatientActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
