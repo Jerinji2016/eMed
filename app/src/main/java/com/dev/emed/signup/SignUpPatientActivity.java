@@ -1,5 +1,6 @@
 package com.dev.emed.signup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dev.emed.R;
+import com.dev.emed.patient.PatientActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -171,8 +173,9 @@ public class SignUpPatientActivity extends AppCompatActivity {
 
                     Toast.makeText(SignUpPatientActivity.this, "Connecting...", Toast.LENGTH_SHORT).show();
 
-                    //  Should redirect to another activity
-                    //  Maintain session
+                    Intent i = new Intent(SignUpPatientActivity.this, PatientActivity.class);
+                    i.putExtra("userId", signUp_patient.getUser_name());
+                    startActivity(i);
                 }
 
                 @Override
