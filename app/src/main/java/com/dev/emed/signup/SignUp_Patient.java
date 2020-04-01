@@ -8,6 +8,7 @@ public class SignUp_Patient {
     private int Age;
     private long Phone_no;
     private String Member_ID;
+    private String Gender;
 
     public String getMember_ID() {
         return Member_ID;
@@ -63,6 +64,14 @@ public class SignUp_Patient {
 
     public void setPhone_no(long phone_no) {
         Phone_no = phone_no;
+    }
+
+    public String getGender() {
+        return Gender;
+    }
+
+    public void setGender(String gender) {
+        Gender = gender;
     }
 
     public SignUp_Patient() {
