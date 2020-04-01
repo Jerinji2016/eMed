@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_login_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/activity_bg"
@@ -12,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="38dp"
         android:gravity="center"
-        android:text="eMed"
+        android:text="@string/app_name"
         android:textColor="#aa2020"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -28,7 +29,7 @@
         style="@style/btnPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +54,6 @@
         android:layout_height="94dp"
         android:rotation="180"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/title-text"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -65,34 +65,35 @@
         android:id="@+id/imageView4"
         android:layout_width="293dp"
         android:layout_height="319dp"
+        android:translationZ="-100dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up"
         app:layout_constraintVertical_bias="0.426"
-        app:srcCompat="@drawable/login_box_bg"
-        android:visibility="invisible"
-        android:translationZ="-100dp"/>
+        app:srcCompat="@drawable/login_box_bg" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/login_username"
         style="@style/textboxPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_@1234567890"
         android:ems="10"
-        android:hint="Username/Referral ID"
+        android:hint="@string/user_name"
         android:inputType="textPersonName"
         android:text=""
         android:textColor="#fff"
         android:textColorHint="#b3b1b1"
-        app:layout_constraintBottom_toTopOf="@+id/ptn_password"
+        app:layout_constraintBottom_toTopOf="@+id/login_password"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView4"
         app:layout_constraintVertical_bias="0.623" />
 
     <EditText
-        android:id="@+id/ptn_password"
+        android:id="@+id/login_password"
         style="@style/textboxPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -115,7 +116,7 @@
         style="@style/btnPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="@string/login"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
@@ -128,25 +129,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintBottom_toTopOf="@+id/login_username"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView4">
 
         <Switch
-            android:id="@+id/switch2"
+            android:id="@+id/ptn_doc_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Patient" />
+            android:text="@string/patient" />
 
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#000"
-            android:text="Doctor" />
+            android:text="@string/doctor"
+            android:textColor="#000" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
