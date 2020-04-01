@@ -1,28 +1,34 @@
 package com.dev.emed.signup;
 
 public class SignUp_Doctor {
-    private String First_name;
-    private String Last_name;
+    private String Name;
+    private String Member_ID;
     private String Specialisation;
     private String Hospital_name;
     private String Hospital_address;
     private String Gender;
+    private String Email;
+    private String User_name;
+    private String Password;
     private long Phone_no;
 
-    public String getFirst_name() {
-        return First_name;
+    public SignUp_Doctor() {
     }
 
-    public void setFirst_name(String first_name) {
-        First_name = first_name;
+    public String getName() {
+        return Name;
     }
 
-    public String getLast_name() {
-        return Last_name;
+    public void setName(String name) {
+        Name = name;
     }
 
-    public void setLast_name(String last_name) {
-        Last_name = last_name;
+    public String getMember_ID() {
+        return Member_ID;
+    }
+
+    public void setMember_ID(String member_ID) {
+        Member_ID = member_ID;
     }
 
     public String getSpecialisation() {
@@ -54,7 +60,31 @@ public class SignUp_Doctor {
     }
 
     public void setGender(String gender) {
-        this.Gender = gender;
+        Gender = gender;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public String getUser_name() {
+        return User_name;
+    }
+
+    public void setUser_name(String user_name) {
+        User_name = user_name;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
     }
 
     public long getPhone_no() {
@@ -63,8 +93,5 @@ public class SignUp_Doctor {
 
     public void setPhone_no(long phone_no) {
         Phone_no = phone_no;
-    }
-
-    public SignUp_Doctor() {
     }
 }
