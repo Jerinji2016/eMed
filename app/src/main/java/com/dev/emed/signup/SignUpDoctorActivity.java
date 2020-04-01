@@ -3,6 +3,7 @@ package com.dev.emed.signup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.dev.emed.R;
+import com.dev.emed.doctor.DoctorActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -108,7 +110,6 @@ public class SignUpDoctorActivity extends AppCompatActivity {
                     setBoolVal(true);
                 }
                 else {
-//                   Log.d("Here", "False");
                     setBoolVal(false);
                 }
             }
@@ -168,8 +169,9 @@ public class SignUpDoctorActivity extends AppCompatActivity {
                     reff.child(signUp_doctor.getUser_name()).setValue(signUp_doctor);
 
                     Toast.makeText(SignUpDoctorActivity.this, "Connecting...", Toast.LENGTH_SHORT).show();
-                    //  Should redirect to another activity
-                    //  Maintain session
+                    Intent i = new Intent(SignUpDoctorActivity.this, DoctorActivity.class);
+                    i.putExtra("userId", signUp_doctor.getUser_name());
+                    startActivity(i);
                 }
 
                 @Override
