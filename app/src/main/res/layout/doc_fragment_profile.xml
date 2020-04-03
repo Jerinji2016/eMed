@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/profile_background_gradient">
+
+    <LinearLayout
+        android:id="@+id/logOut_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.02">
+
+        <TextView
+            android:id="@+id/logout_text_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:text="Logout"
+            android:textColor="#FFF"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/logout_btn"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_logout" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logOut_layout"
+        app:layout_constraintVertical_bias="0.148">
+
+        <ImageView
+            android:id="@+id/doc_img"
+            android:layout_width="106dp"
+            android:layout_height="115dp"
+            android:layout_marginStart="40dp"
+            app:srcCompat="@drawable/ic_doc_img" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/doc_name_text"
+                style="@style/doc_profile_text"
+                android:layout_width="175dp"
+                android:layout_height="35dp"
+                android:text="Doc Name"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/doc_specialisation_text"
+                style="@style/doc_profile_text"
+                android:layout_width="175dp"
+                android:layout_height="34dp"
+                android:text="Doc Specialisation" />
+
+            <TextView
+                android:id="@+id/doc_reff_id_text"
+                style="@style/doc_profile_text"
+                android:layout_width="175dp"
+                android:layout_height="39dp"
+                android:text="Ref ID:" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/scan_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_scan_primary"
+        android:paddingStart="50dp"
+        android:paddingTop="30dp"
+        android:paddingEnd="50dp"
+        android:paddingBottom="30dp"
+        android:text="Scan"
+        android:textColor="#aa2020"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintVertical_bias="0.255" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.86">
+
+        <Button
+            android:id="@+id/patient_record_btn"
+            android:layout_width="140dp"
+            android:layout_height="90dp"
+            android:layout_weight="1"
+            android:layout_margin="20dp"
+            android:background="@drawable/btn_primary_default"
+            android:gravity="center"
+            android:text="Patient\nRecord"
+            android:textColor="#FFF"/>
+
+        <Button
+            android:id="@+id/medical_history_btn"
+            android:layout_width="140dp"
+            android:layout_height="90dp"
+            android:layout_weight="1"
+            android:layout_margin="20dp"
+            android:background="@drawable/btn_primary_default"
+            android:gravity="center"
+            android:text="Medical\nHistory"
+            android:textColor="#FFF" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

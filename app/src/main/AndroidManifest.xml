@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.dev.emed">
+    package="com.dev.emed" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -13,13 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".signup.SignUpDoctorActivity"></activity>
+        tools:ignore="GoogleAppIndexingWarning" >
+        <activity android:name=".signup.SignUpDoctorActivity" />
         <activity android:name=".signup.SelectUserTypeActivity" />
-        <activity android:name=".doctor.DoctorActivity" />
+        <activity android:name=".doctor.DoctorActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".patient.PatientActivity" />
         <activity android:name=".signup.SignUpPatientActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

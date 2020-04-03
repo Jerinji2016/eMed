@@ -27,5 +27,15 @@
     <string name="hospital_addr">Hospital Addr.</string>
     <string name="hosp_name">Hosp. Name</string>
     <string name="hopstial_name">Hopstial Name</string>
+
     <string name="specialisation">Specialisation</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="prescribe_medicine">Prescribe Medicine</string>
+    <string name="patient_history">Patient History</string>
+    <string name="prescription_history">Prescription History</string>
+    <string name="view_profile">View Profile</string>
+    <string name="logout">Logout</string>
 </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/doc_profile"
+            android:icon="@drawable/ic_menu_profile"
+            android:title="@string/view_profile" />
+        <item
+            android:id="@+id/doc_prescription"
+            android:icon="@drawable/ic_menu_prescription"
+            android:title="@string/prescribe_medicine" />
+        <item
+            android:id="@+id/doc_ptn_history"
+            android:icon="@drawable/ic_menu_ptn_history"
+            android:title="@string/patient_history" />
+        <item
+            android:id="@+id/doc_med_prescribed"
+            android:icon="@drawable/ic_menu_medicine_prescribed"
+            android:title="@string/prescription_history" />
+        <item
+            android:id="@+id/doc_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/logout" />
+    </group>
+</menu>

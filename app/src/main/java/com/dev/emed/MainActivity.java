@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                             else {
-                                Snackbar snackbar = Snackbar.make(findViewById(R.id.main_login_activity), "Invalid Username", Snackbar.LENGTH_LONG);
+                                Snackbar snackbar = Snackbar.make(findViewById(R.id.main_login_activity), "Invalid Username/Password", Snackbar.LENGTH_LONG);
                                     snackbar.show();
                             }
                         }
