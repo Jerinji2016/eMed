@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dev.emed.doctor.DoctorActivity;
-import com.dev.emed.patient.PatientActivity12;
+import com.dev.emed.patient.PatientActivity;
 import com.dev.emed.signup.SelectUserTypeActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     userType = "Patient";
-                    i = new Intent(MainActivity.this, PatientActivity12.class);
+                    i = new Intent(MainActivity.this, PatientActivity.class);
                 }
 
                 userid = username.getText().toString().trim();
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 if(Objects.equals(dataSnapshot.child(userid).child("password").getValue(), generated_hash)) {
                                     i.putExtra("userId", userid);
+                                    Log.d("method", userType);
                                     startActivity(i);
                                 }
                                 else {

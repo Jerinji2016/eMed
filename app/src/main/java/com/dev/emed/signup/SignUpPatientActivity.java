@@ -105,16 +105,13 @@ public class SignUpPatientActivity extends AppCompatActivity {
         reff.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                if(dataSnapshot.child(user).getValue() != null) {
-//                   Log.d("Here", "True");
                    setBoolVal(true);
                }
                else {
                    Snackbar snackbar = Snackbar
                                 .make(findViewById(R.id.ptn_signUp_layout), "Username Available", Snackbar.LENGTH_LONG);
                    snackbar.show();
-//                   Log.d("Here", "False");
                    setBoolVal(false);
                }
             }
@@ -131,8 +128,6 @@ public class SignUpPatientActivity extends AppCompatActivity {
     }
 
     public void signUpUser() {
-//        Log.d("Result", ""+ bool);
-
         if(!bool) {
             reff = FirebaseDatabase.getInstance().getReference().child("Patient");
 
