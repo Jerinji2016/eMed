@@ -1,16 +1,19 @@
 package com.dev.emed.doctor;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.dev.emed.MainActivity;
 import com.dev.emed.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +26,7 @@ import java.util.Objects;
 public class DoctorProfileFragment extends Fragment {
     private View view;
     private String userId;
+    ImageView logout;
 
     @Nullable
     @Override
@@ -31,6 +35,16 @@ public class DoctorProfileFragment extends Fragment {
 
         DatabaseReference reff = FirebaseDatabase.getInstance().getReference("Doctor");
         userId = Objects.requireNonNull(getArguments()).getString("userId");
+
+        logout = view.findViewById(R.id.logout_btn);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), MainActivity.class);
+                startActivity(i);
+            }
+        });
 
         reff.addValueEventListener(new ValueEventListener() {
             @Override

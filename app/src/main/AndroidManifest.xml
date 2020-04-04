@@ -18,7 +18,7 @@
         <activity android:name=".signup.SelectUserTypeActivity" />
         <activity android:name=".doctor.DoctorActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".patient.PatientActivity" />
+        <activity android:name=".patient.PatientActivity12" />
         <activity android:name=".signup.SignUpPatientActivity" />
         <activity android:name=".MainActivity" >
             <intent-filter>
