@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         login_redirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
                 userType = userTypeSwitch.isChecked() ? "Doctor" : "Patient";
                 if(userTypeSwitch.isChecked()) {
                     userType = "Doctor";
@@ -88,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
                                 if(Objects.equals(dataSnapshot.child(userid).child("password").getValue(), generated_hash)) {
                                     i.putExtra("userId", userid);
-                                    Log.d("method", userType);
                                     startActivity(i);
                                 }
                                 else {
@@ -122,5 +123,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishActivity(0);
     }
 }
