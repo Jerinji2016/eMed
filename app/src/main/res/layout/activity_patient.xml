@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    app:statusBarBackground="#AA2020"
     tools:context=".patient.PatientActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -12,16 +14,6 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
         android:background="#aa2020">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minHeight="?actionBarSize"
-            android:padding="@dimen/appbar_padding"
-            android:text="@string/app_name"
-            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
@@ -42,5 +34,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@drawable/ic_ptn_scan" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

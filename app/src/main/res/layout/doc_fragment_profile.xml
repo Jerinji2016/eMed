@@ -21,7 +21,6 @@
         app:layout_constraintVertical_bias="0.02">
 
         <TextView
-            android:id="@+id/logout_text_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
@@ -50,7 +49,6 @@
         app:layout_constraintVertical_bias="0.148">
 
         <ImageView
-            android:id="@+id/doc_img"
             android:layout_width="106dp"
             android:layout_height="115dp"
             android:layout_marginStart="40dp"
@@ -88,7 +86,6 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/scan_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -119,7 +116,6 @@
         app:layout_constraintVertical_bias="0.86">
 
         <Button
-            android:id="@+id/patient_record_btn"
             android:layout_width="140dp"
             android:layout_height="90dp"
             android:layout_weight="1"
@@ -130,7 +126,6 @@
             android:textColor="#FFF"/>
 
         <Button
-            android:id="@+id/medical_history_btn"
             android:layout_width="140dp"
             android:layout_height="90dp"
             android:layout_weight="1"

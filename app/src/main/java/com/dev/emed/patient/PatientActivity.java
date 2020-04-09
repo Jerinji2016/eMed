@@ -2,6 +2,7 @@ package com.dev.emed.patient;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import com.google.android.material.tabs.TabLayout;
 public class PatientActivity extends AppCompatActivity {
 
     String ptn_userid;
+    int currentContainerId = R.id.op1_central_nervous_option_container;
+    int currentSystemOpBtnId = R.id.system_op1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

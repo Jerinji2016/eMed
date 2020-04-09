@@ -29,7 +29,6 @@
                 app:srcCompat="@drawable/profile_background_gradient" />
 
             <TextView
-                android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -47,7 +46,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
-            android:id="@+id/ptn_scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -71,7 +69,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/fname_text"
                             style="@style/signup_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -94,7 +91,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/lname_text"
                             style="@style/signup_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -117,7 +113,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/uname_text"
                             style="@style/signup_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -141,7 +136,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/pass_text"
                             style="@style/signup_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -164,7 +158,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/cpass_text"
                             style="@style/signup_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -188,7 +181,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/age_text"
                             style="@style/signup_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -211,7 +203,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/email_text"
                             style="@style/signup_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -234,7 +225,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/phone_text"
                             style="@style/signup_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -257,7 +247,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/gender_text"
                             style="@style/signup_text"
                             android:layout_width="165dp"
                             android:layout_height="wrap_content"

@@ -1,19 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_orange_dark"
     tools:context=".patient.PatientProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/username"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="#fff"
-        android:textSize="30dp"
-        android:gravity="center"
-        android:text="Patient Profile" />
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_margin="30dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="181dp"
+                android:layout_height="160dp"
+                android:src="@drawable/profile_icon" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/ptn_profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="TextView"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ptn_profile_userid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:text="Patient Profile"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ptn_profile_reffid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:text="TextView"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/ptn_details"
+            android:layout_width="match_parent"
+
+            android:layout_height="fill_parent">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <TableRow
+                    style="@style/PtnTableRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        style="@style/PtnTableText"
+                        android:text="Age : " />
+
+                    <TextView
+                        android:id="@+id/ptn_profile_age"
+                        style="@style/PtnTableValues"
+                        android:layout_width="174dp"
+                        android:text="TextView" />
+                </TableRow>
+
+                <TableRow
+                    style="@style/PtnTableRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        style="@style/PtnTableText"
+                        android:text="Gender : " />
+
+                    <TextView
+                        android:id="@+id/ptn_profile_gender"
+                        style="@style/PtnTableValues"
+                        android:text="TextView" />
+                </TableRow>
+
+                <TableRow
+                    style="@style/PtnTableRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        style="@style/PtnTableText"
+                        android:text="Phone No. : " />
+
+                    <TextView
+                        android:id="@+id/ptn_profile_phone"
+                        style="@style/PtnTableValues"
+                        android:text="TextView" />
+                </TableRow>
+
+                <TableRow
+                    style="@style/PtnTableRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        style="@style/PtnTableText"
+                        android:text="Physical Details : " />
+
+                    <TextView
+                        style="@style/PtnTableValues"
+                        android:text="TextView" />
+                </TableRow>
+
+                <TableRow
+                    style="@style/PtnTableRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        style="@style/PtnTableText"
+                        android:text="Allergies : " />
+
+                    <TextView
+                        style="@style/PtnTableValues"
+                        android:text="TextView" />
+                </TableRow>
+
+                <TableRow
+                    style="@style/PtnTableRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        style="@style/PtnTableText"
+                        android:text="Hypertension (BP) : " />
+
+                    <TextView
+                        style="@style/PtnTableValues"
+                        android:text="TextView" />
+                </TableRow>
+
+                <TableRow
+                    style="@style/PtnTableRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        style="@style/PtnTableText"
+                        android:text="Diabetics : " />
+
+                    <TextView
+                        style="@style/PtnTableValues"
+                        android:text="TextView" />
+                </TableRow>
+
+                <TableRow
+                    style="@style/PtnTableRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        style="@style/PtnTableText"
+                        android:text="Cholestrol : " />
+
+                    <TextView
+                        style="@style/PtnTableValues"
+                        android:text="TextView" />
+                </TableRow>
+
+                <TableRow
+                    style="@style/PtnTableRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="20dp"
+                        android:layout_span="2"
+                        android:background="@drawable/btn_primary_default"
+                        android:text="@string/create_qr"
+                        android:textColor="#FFFFFF"
+                        app:layout_constraintBottom_toBottomOf="@+id/ptn_details"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                </TableRow>
+            </TableLayout>
+        </ScrollView>
+
+    </LinearLayout>
 
 </FrameLayout>
