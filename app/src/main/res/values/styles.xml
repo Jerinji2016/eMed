@@ -55,7 +55,52 @@
         <item name="android:textSize">30sp</item>
     </style>
 
+    <style name="PtnTableRow">
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="PtnTableText">
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">200dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">end</item>
+    </style>
+
+    <style name="PtnTableValues">
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="systemContainer">
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:background">@drawable/system_container_bg</item>
+        <item name="android:stretchColumns">*</item>
+        <item name="android:elevation">5dp</item>
+    </style>
+
+    <style name="systemContainerText">
+        <item name="android:layout_weight">.9</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height"> wrap_content</item>
+        <item name="android:textColor">#AA2020</item>
+    </style>
+
+    <style name="systemContainerBtn">
+        <item name="android:background">@drawable/btn_primary_default</item>
+        <item name="android:foreground">@drawable/ic_arrow_drop_down</item>
+
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

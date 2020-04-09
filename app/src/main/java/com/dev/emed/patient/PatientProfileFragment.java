@@ -2,14 +2,21 @@ package com.dev.emed.patient;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dev.emed.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,11 +63,41 @@ public class PatientProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        String user = getArguments().getString(ARG_PARAM1);
+        final String user = getArguments().getString(ARG_PARAM1);
 
         View view = inflater.inflate(R.layout.ptn_fragment_patient_profile, container, false);
-        TextView t = view.findViewById(R.id.username);
-        t.setText(user);
+        final TextView ptnUserId = view.findViewById(R.id.ptn_profile_userid);
+        final TextView ptnUserName = view.findViewById(R.id.ptn_profile_name);
+        final TextView ptnUserReffId = view.findViewById(R.id.ptn_profile_reffid);
+        final TextView ptnUserAge = view.findViewById(R.id.ptn_profile_age);
+        final TextView ptnUserGender = view.findViewById(R.id.ptn_profile_gender);
+        final TextView ptnUserPhone = view.findViewById(R.id.ptn_profile_phone);
+
+
+        DatabaseReference mReff = FirebaseDatabase.getInstance().getReference("Patient");
+        mReff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DataSnapshot ptnUser = dataSnapshot.child(user);
+
+                ptnUserName.setText((String) ptnUser.child("name").getValue());
+                ptnUserId.setText((String) ptnUser.child("user_name").getValue());
+                ptnUserReffId.setText((String) ptnUser.child("member_ID").getValue());
+
+                long age = (long) ptnUser.child("age").getValue();
+                ptnUserAge.setText(Long.toString(age));
+                ptnUserGender.setText((String) ptnUser.child("gender").getValue());
+
+                long phoneNo = (long) ptnUser.child("phone_no").getValue();
+                String phone = Long.toString(phoneNo);
+                ptnUserPhone.setText(phone);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("Ptn-Profile", databaseError.toString());
+            }
+        });
         // Inflate the layout for this fragment
         return view;
     }
