@@ -57,22 +57,23 @@
 
     <style name="PtnTableRow">
         <item name="android:padding">5dp</item>
+        <item name="android:weightSum">2</item>
     </style>
 
     <style name="PtnTableText">
-        <item name="android:layout_weight">0.5</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:padding">10dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">200dp</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:gravity">end</item>
     </style>
 
     <style name="PtnTableValues">
-        <item name="android:layout_weight">0.5</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:padding">10dp</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -88,6 +89,8 @@
 
     <style name="systemContainerText">
         <item name="android:layout_weight">.9</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height"> wrap_content</item>
         <item name="android:textColor">#AA2020</item>

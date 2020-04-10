@@ -1,5 +1,6 @@
 package com.dev.emed.patient;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,8 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dev.emed.MainActivity;
 import com.dev.emed.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -72,7 +75,20 @@ public class PatientProfileFragment extends Fragment {
         final TextView ptnUserAge = view.findViewById(R.id.ptn_profile_age);
         final TextView ptnUserGender = view.findViewById(R.id.ptn_profile_gender);
         final TextView ptnUserPhone = view.findViewById(R.id.ptn_profile_phone);
+        final TextView ptnUserWeight = view.findViewById(R.id.ptn_profile_weight);
+        final TextView ptnUserHeight = view.findViewById(R.id.ptn_profile_height);
+        final TextView ptnUserMedConditions = view.findViewById(R.id.ptn_profile_medical_conditions);
+        final TextView ptnUserLastDoc = view.findViewById(R.id.ptn_profile_last_doc);
+        final TextView ptnUserCurrentMed = view.findViewById(R.id.ptn_profile_current_medicine);
 
+        ImageView logoutBtn = view.findViewById(R.id.ptn_profile_logout_btn);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), MainActivity.class);
+                startActivity(i);
+            }
+        });
 
         DatabaseReference mReff = FirebaseDatabase.getInstance().getReference("Patient");
         mReff.addValueEventListener(new ValueEventListener() {
@@ -91,6 +107,10 @@ public class PatientProfileFragment extends Fragment {
                 long phoneNo = (long) ptnUser.child("phone_no").getValue();
                 String phone = Long.toString(phoneNo);
                 ptnUserPhone.setText(phone);
+
+                ptnUserWeight.setText((String) ptnUser.child("physic").child("weight").getValue());
+                ptnUserHeight.setText((String) ptnUser.child("physic").child("height").getValue());
+                ptnUserMedConditions.setText((String) ptnUser.child("medicalConditions").getValue());
             }
 
             @Override

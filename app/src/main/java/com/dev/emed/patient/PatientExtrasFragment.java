@@ -6,14 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.dev.emed.R;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,8 +36,11 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
 
     private int currentContainerId;
     private int currentSystemOpBtnId;
-    View view;
-    String currentConditions = "";
+    private View view;
+    private String currentConditions = "";
+    private String user;
+    private List<String> tuberculosisTypes = new ArrayList<>();
+    private List<String> carcinomaTypes = new ArrayList<>();
 
     public PatientExtrasFragment() {
         // Required empty public constructor
@@ -62,7 +74,7 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String user = getArguments().getString(ARG_PARAM1);
+        user = getArguments().getString(ARG_PARAM1);
         view = inflater.inflate(R.layout.ptn_fragment_patient_extras, container, false);
 
         currentContainerId = R.id.op1_central_nervous_option_container;
@@ -97,6 +109,9 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
         view.findViewById(R.id.op7_next_btn).setOnClickListener(this);
         view.findViewById(R.id.op8_next_btn).setOnClickListener(this);
         view.findViewById(R.id.op9_next_btn).setOnClickListener(this);
+
+        view.findViewById(R.id.add_tuberculosis_types_btn).setOnClickListener(this);
+        view.findViewById(R.id.add_carcinoma_types_btn).setOnClickListener(this);
 
         // Inflate the layout for this fragment
         return view;
@@ -158,9 +173,38 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
                 case R.id.op9_next_btn:
                     updatePtnDB();
                     break;
+                case R.id.add_tuberculosis_types_btn:
+                    TextView tb = view.findViewById(R.id.tuberculosis_types_container);
+                    String tbStr = tb.getText().toString();
+                    EditText tbAdd = view.findViewById(R.id.tb_text);
+                    String tbAddText = tbAdd.getText().toString().trim();
+                    if (!tuberculosisTypes.contains(tbAddText)) {
+                        tbStr += tbAddText + "\n";
+                        tuberculosisTypes.add(tbAddText);
+                        tb.setText(tbStr);
+                    } else {
+                        Snackbar snackbar = Snackbar.make(view, tbAddText + " already added", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+                    tbAdd.setText("");
+                    break;
+                case R.id.add_carcinoma_types_btn:
+                    TextView cc = view.findViewById(R.id.carcinoma_type_container);
+                    String ccStr = cc.getText().toString();
+                    EditText ccAdd = view.findViewById(R.id.cc_text);
+                    String ccAddText = ccAdd.getText().toString().trim();
+                    if (!carcinomaTypes.contains(ccAddText)) {
+                        ccStr += ccAddText + "\n";
+                        carcinomaTypes.add(ccAddText);
+                        cc.setText(ccStr);
+                    } else {
+                        Snackbar snackbar = Snackbar.make(view, ccAddText + " already added", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+                    ccAdd.setText("");
+                    break;
             }
-        }
-        if (String.valueOf(v.getClass()).equals("class androidx.appcompat.widget.AppCompatCheckBox")) {
+        } else if (String.valueOf(v.getClass()).equals("class androidx.appcompat.widget.AppCompatCheckBox")) {
             Toast.makeText(getActivity(), "Checkbox", Toast.LENGTH_SHORT).show();
             CheckBox c = view.findViewById(v.getId());
             int visibility;
@@ -293,6 +337,7 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
 
     private void updatePtnDB() {
         currentConditions = "";
+        boolean updateFlag = true;
 
         //  Container 1 | CENTRAL NERVOUS SYSTEM
         simplyCheckBox(R.id.op1_stroke);
@@ -336,9 +381,46 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
         simplyCheckBox(R.id.op9_hiv);
         checkBoxWithRadio(R.id.op9_hepatitis, R.id.op9_hepatitis_sub);
 
-        CheckBox check = view.findViewById(R.id.op9_tuberculosis);
+        CheckBox checkbox = view.findViewById(R.id.op9_tuberculosis);
+        if (checkbox.isChecked()) {
+            if (!tuberculosisTypes.isEmpty()) {
+                currentConditions += "Tuberculosis - \n";
+                for (String tuberculosisType : tuberculosisTypes)
+                    currentConditions += "\t" + tuberculosisType + "\n";
+                updateFlag = true;
+            } else {
+                Snackbar snackbar = Snackbar.make(view, "Please input the type of Tuberculosis", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                updateFlag = false;
+            }
+        }
 
-        Toast.makeText(getActivity(), currentConditions, Toast.LENGTH_SHORT).show();
+        checkbox = view.findViewById(R.id.op9_carcinoma);
+        if (checkbox.isChecked()) {
+            if (!carcinomaTypes.isEmpty()) {
+                currentConditions += "Carcinoma (Cancer) - \n";
+                for (String carcinomaType : carcinomaTypes)
+                    currentConditions += "\t" + carcinomaType + "\n";
+            } else {
+                Snackbar snackbar = Snackbar.make(view, "Please input the type of Cancer", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                updateFlag = false;
+            }
+        }
+        EditText weightBox = view.findViewById(R.id.ptn_weight);
+        EditText heightBox = view.findViewById(R.id.ptn_height);
+
+        if (updateFlag) {
+            Toast.makeText(getActivity(), currentConditions, Toast.LENGTH_SHORT).show();
+            final DatabaseReference mReff = FirebaseDatabase.getInstance().getReference("Patient").child(user);
+            Map<String, Object> medUpdate = new HashMap<>();
+            medUpdate.put("medicalConditions", currentConditions);
+            if (!weightBox.getText().toString().isEmpty())
+                medUpdate.put("physic/weight", weightBox.getText().toString());
+            if (!heightBox.getText().toString().isEmpty())
+                medUpdate.put("physic/height", heightBox.getText().toString());
+            mReff.updateChildren(medUpdate);
+        }
     }
 
     private void simplyCheckBox(int checkBoxId) {
@@ -353,8 +435,7 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
             if (radio.getCheckedRadioButtonId() != -1) {
                 RadioButton rad = view.findViewById(radio.getCheckedRadioButtonId());
                 currentConditions += checkbox.getText().toString() + " - " + rad.getText().toString() + "\n";
-            }
-            else {
+            } else {
                 Toast.makeText(getActivity(), "Radio Problem", Toast.LENGTH_SHORT).show();
                 Log.d("Radio", "Radio Error");
             }
