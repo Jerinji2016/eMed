@@ -112,5 +112,6 @@
     <string name="display_picture">Display Picture</string>
 
     <string name="app_needs_your_camera_permission_in_order_to_scan_qr_code">App needs your camera permission in order to scan qr code.</string>
+    <string name="scan_qr_code">Scan QR Code</string>
 
 </resources>

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.dev.emed.MainActivity;
 import com.dev.emed.R;
+import com.dev.emed.qrCode.QrCodeScanner;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +28,6 @@ import java.util.Objects;
 public class DoctorProfileFragment extends Fragment {
     private View view;
     private String userId;
-    ImageView logout;
 
     @Nullable
     @Override
@@ -36,7 +37,17 @@ public class DoctorProfileFragment extends Fragment {
         DatabaseReference reff = FirebaseDatabase.getInstance().getReference("Doctor");
         userId = Objects.requireNonNull(getArguments()).getString("userId");
 
-        logout = view.findViewById(R.id.logout_btn);
+        ImageView logout = view.findViewById(R.id.logout_btn);
+        Button docScanBtn = view.findViewById(R.id.doc_scan_btn);
+
+        docScanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), QrCodeScanner.class);
+                i.putExtra("userType", "Doctor");
+                startActivity(i);
+            }
+        });
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override

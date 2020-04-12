@@ -1,6 +1,7 @@
 package com.dev.emed.patient;
 
 import android.content.Intent;
+import android.media.audiofx.DynamicsProcessing;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,12 +10,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.dev.emed.R;
 import com.dev.emed.patient.ui.main.SectionsPagerAdapter;
+import com.dev.emed.qrCode.QrCodeScanner;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 public class PatientActivity extends AppCompatActivity {
 
     String ptn_userid;
+    private static final String TAG = "PatientActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,10 @@ public class PatientActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent i = new Intent(PatientActivity.this, QrCodeScanner.class);
+                i.putExtra("userType", "Patient");
+                i.putExtra("userName", ptn_userid);
+                startActivity(i);
             }
         });
     }

@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".patient.PrescriptionDetailsActivity"></activity>
+        <activity android:name=".doctor.PatientDetailsActivity" />
+        <activity android:name=".qrCode.QrCodeScanner" />
         <activity
             android:name=".patient.PatientActivity"
             android:label="@string/title_activity_patient"

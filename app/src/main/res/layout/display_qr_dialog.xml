@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#AA2020">
+
+    <TextView
+        android:id="@+id/scan_qr_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:text="@string/scan_qr_code"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:padding="20dp" />
+
+    <FrameLayout
+        android:id="@+id/qr_code_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scan_qr_text">
+
+        <ImageView
+            android:id="@+id/qr_code_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"/>
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/dismiss_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/qr_code_frame"
+        android:layout_margin="20dp"
+        android:background="@drawable/btn_primary_white"
+        android:text="Close"
+        android:textStyle="bold"
+        android:textColor="#AA2020"
+        android:textSize="18sp" />
+</RelativeLayout>
