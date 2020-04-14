@@ -1,7 +1,7 @@
 package com.dev.emed.patient;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.dev.emed.MainActivity;
 import com.dev.emed.R;
 import com.dev.emed.qrCode.OpenQrDialog;
 import com.dev.emed.qrCode.helper.EncryptionHelper;
-import com.dev.emed.qrCode.helper.QRCodeHelper;
 import com.dev.emed.qrCode.models.PatientDetailObject;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,18 +25,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
-import java.lang.reflect.GenericSignatureFormatError;
+import java.util.Objects;
 
 public class PatientProfileFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "userId";
+    private static final String TAG = "PatientProfileFragment";
 
-    public PatientDetailObject myPtn;
-
-    private String mParam1;
-    private String mParam2;
+    private PatientDetailObject myPtn;
 
     public PatientProfileFragment() {
         // Required empty public constructor
@@ -55,16 +50,13 @@ public class PatientProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final String user = getArguments().getString(ARG_PARAM1);
+        final String user = Objects.requireNonNull(getArguments()).getString(ARG_PARAM1);
         myPtn = new PatientDetailObject();
 
         View view = inflater.inflate(R.layout.ptn_fragment_patient_profile, container, false);
@@ -93,8 +85,6 @@ public class PatientProfileFragment extends Fragment {
         createQrBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(getActivity(), QrCodeGenerator.class);
-//                startActivity(i);
                 //  Opening Dialog
                 String str = new Gson().toJson(myPtn);
                 String enc = EncryptionHelper.getInstance()
@@ -111,6 +101,7 @@ public class PatientProfileFragment extends Fragment {
 
         final DatabaseReference mReff = FirebaseDatabase.getInstance().getReference("Patient");
         mReff.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DataSnapshot ptnUser = dataSnapshot.child(user);
@@ -122,33 +113,24 @@ public class PatientProfileFragment extends Fragment {
                 myPtn.setUserId((String) ptnUser.child("user_name").getValue());
 
                 ptnUserReffId.setText((String) ptnUser.child("member_ID").getValue());
-                myPtn.setReffId((String) ptnUser.child("member_ID").getValue());
 
                 long age = (long) ptnUser.child("age").getValue();
                 ptnUserAge.setText(Long.toString(age));
-                myPtn.setAge(Long.toString(age));
 
                 ptnUserGender.setText((String) ptnUser.child("gender").getValue());
-                myPtn.setGender((String) ptnUser.child("gender").getValue());
 
                 long phoneNo = (long) ptnUser.child("phone_no").getValue();
                 String phone = Long.toString(phoneNo);
                 ptnUserPhone.setText(phone);
-                myPtn.setPhone(phone);
 
                 ptnUserWeight.setText((String) ptnUser.child("physic").child("weight").getValue());
-                myPtn.setWeight((String) ptnUser.child("physic").child("weight").getValue());
-
                 ptnUserHeight.setText((String) ptnUser.child("physic").child("height").getValue());
-                myPtn.setHeight((String) ptnUser.child("physic").child("height").getValue());
-
                 ptnUserMedConditions.setText((String) ptnUser.child("medicalConditions").getValue());
-                myPtn.setMedConditions((String) ptnUser.child("medicalConditions").getValue());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.d("Ptn-Profile", databaseError.toString());
+                Log.d(TAG, "onCancelled: "+databaseError.getMessage());
             }
         });
         // Inflate the layout for this fragment

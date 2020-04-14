@@ -74,6 +74,7 @@ public class QrCodeScanner extends AppCompatActivity implements ZXingScannerView
     protected void onPause() {
         super.onPause();
         qrCodeScanner.stopCamera();
+        finish();
     }
 
 
@@ -86,12 +87,12 @@ public class QrCodeScanner extends AppCompatActivity implements ZXingScannerView
                     .getDecryptionString(result.getText());
 
             if (userType.equals("Doctor")) {
-                Log.d(TAG, "handleResult: DOCTOR ===========***********===========");
+                Log.d(TAG, "handleResult: DOCTOR - PatientDetailsActivity");
                 Intent i = new Intent(getApplicationContext(), PatientDetailsActivity.class);
                 i.putExtra("dcy_text", decryptedString);
                 startActivity(i);
             } else {
-                Log.d(TAG, "handleResult: PATIENT==========************============");
+                Log.d(TAG, "handleResult: PATIENT - PrescriptionDetailsActivity");
                 Intent i = new Intent(getApplicationContext(), PrescriptionDetailsActivity.class);
                 i.putExtra("dcy_text", decryptedString);
                 startActivity(i);

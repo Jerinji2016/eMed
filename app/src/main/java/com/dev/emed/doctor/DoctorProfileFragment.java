@@ -67,6 +67,7 @@ public class DoctorProfileFragment extends Fragment {
                 docName.setText(Objects.requireNonNull(dataSnapshot.child(userId).child("name").getValue()).toString());
                 docSpecialisation.setText(Objects.requireNonNull(dataSnapshot.child(userId).child("specialisation").getValue()).toString());
                 docId.setText(Objects.requireNonNull(dataSnapshot.child(userId).child("member_ID").getValue()).toString());
+
             }
 
             @Override

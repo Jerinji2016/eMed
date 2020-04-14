@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".patient.PrescriptionDetailsActivity"></activity>
+        <activity android:name=".patient.PrescriptionDetailsActivity" />
         <activity android:name=".doctor.PatientDetailsActivity" />
         <activity android:name=".qrCode.QrCodeScanner" />
         <activity
@@ -27,6 +27,7 @@
         <activity android:name=".signup.SelectUserTypeActivity" />
         <activity
             android:name=".doctor.DoctorActivity"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".signup.SignUpPatientActivity" />
         <activity android:name=".MainActivity">

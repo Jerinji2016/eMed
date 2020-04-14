@@ -122,4 +122,13 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
+    <style name="themeRedButton">
+        <item name="android:background">@drawable/btn_primary_default</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="themeWhiteButton">
+        <item name="android:background">@drawable/btn_primary_white</item>
+        <item name="android:textColor">#AA2020</item>
+    </style>
 </resources>

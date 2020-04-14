@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.dev.emed.R;
 import com.dev.emed.qrCode.models.PatientDetailObject;
@@ -24,7 +25,9 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
         Intent i = getIntent();
         String decryptedString = i.getStringExtra("dcy_text");
 
-        PrescriptionObject userObj = new Gson()
-                .fromJson(decryptedString, PrescriptionObject.class);
+        String userObj = new Gson()
+                .fromJson(decryptedString, String.class);
+
+        Toast.makeText(this, userObj, Toast.LENGTH_SHORT).show();
     }
 }

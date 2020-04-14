@@ -31,15 +31,18 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
     private DrawerLayout drawer;
     String doc_userid;
 
+    private static final String TAG = "DoctorActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor);
 
-        Log.d("Frag", " = = = = = = = Frag here");
         Toolbar toolbar = findViewById(R.id.doc_toolbar);
         toolbar.setTitle(R.string.dashboard);
         setSupportActionBar(toolbar);
+
+        Log.d(TAG, "onCreate: Create Doc Activity");
 
         drawer = findViewById(R.id.doctor_dashboard_layout);
 
@@ -53,14 +56,17 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
         final TextView navHeaderName = headerView.findViewById(R.id.nav_doc_name);
         final TextView navHeaderId = headerView.findViewById(R.id.nav_doc_reff_id);
 
-        DatabaseReference reff = FirebaseDatabase.getInstance().getReference("Doctor");
-        reff.addValueEventListener(new ValueEventListener() {
+        final DatabaseReference reff = FirebaseDatabase.getInstance().getReference("Doctor");
+        reff.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                navHeaderName.setText(Objects.requireNonNull(dataSnapshot.child(doc_userid).child("name").getValue()).toString());
-                navHeaderId.setText(Objects.requireNonNull(dataSnapshot.child(doc_userid).child("member_ID").getValue()).toString());
+                if(dataSnapshot.exists()){
+                    navHeaderName.setText(Objects.requireNonNull(dataSnapshot.child(doc_userid).child("name").getValue()).toString());
+                    navHeaderId.setText(Objects.requireNonNull(dataSnapshot.child(doc_userid).child("member_ID").getValue()).toString());
+                }
+                else
+                    reff.removeEventListener(this);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("RF-NavSet", databaseError.toString());
