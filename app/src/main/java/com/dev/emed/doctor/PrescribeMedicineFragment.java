@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import com.dev.emed.R;
 import com.dev.emed.qrCode.OpenQrDialog;
 import com.dev.emed.qrCode.helper.EncryptionHelper;
+import com.dev.emed.qrCode.models.DocQrObject;
 import com.dev.emed.qrCode.models.PrescriptionObject;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.primitives.Chars;
@@ -110,7 +111,11 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
 
                     Toast.makeText(getActivity(), "Profile Updated", Toast.LENGTH_SHORT).show();
 
-                    String str = new Gson().toJson(consultId);
+                    DocQrObject qrData = new DocQrObject();
+                    qrData.setDocUserId(docUserId);
+                    qrData.setConsultId(consultId);
+
+                    String str = new Gson().toJson(qrData);
                     Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
                     String enc = EncryptionHelper.getInstance()
                             .encryptionString(str)
@@ -269,9 +274,11 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
         //  Add values to Firebase
 
         DatabaseReference mReff = FirebaseDatabase.getInstance().getReference("Doctor").child(docUserId);
+        int n = 0;
         for (PrescriptionObject obj : medPrescription) {
             Log.d(TAG, "Loop: " + obj);
-            mReff.child("consultants").child(consultId).child("prescription").setValue(obj);
+            mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).setValue(obj);
+            n++;
         }
         mReff.child("consultants").child(consultId).child("ptnName").setValue(medPtnName);
         mReff.child("consultants").child(consultId).child("ptnAge").setValue(medPtnAge);

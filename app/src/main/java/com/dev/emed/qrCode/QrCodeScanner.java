@@ -15,10 +15,6 @@ import com.dev.emed.R;
 import com.dev.emed.doctor.PatientDetailsActivity;
 import com.dev.emed.patient.PrescriptionDetailsActivity;
 import com.dev.emed.qrCode.helper.EncryptionHelper;
-import com.dev.emed.qrCode.models.PatientDetailObject;
-import com.dev.emed.qrCode.models.PrescriptionObject;
-import com.dev.emed.qrCode.models.UserObject;
-import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 

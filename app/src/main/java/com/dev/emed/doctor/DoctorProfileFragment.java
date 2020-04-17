@@ -64,9 +64,9 @@ public class DoctorProfileFragment extends Fragment {
                 TextView docSpecialisation = view.findViewById(R.id.doc_specialisation_text);
                 TextView docId = view.findViewById(R.id.doc_reff_id_text);
 
-                docName.setText(Objects.requireNonNull(dataSnapshot.child(userId).child("name").getValue()).toString());
-                docSpecialisation.setText(Objects.requireNonNull(dataSnapshot.child(userId).child("specialisation").getValue()).toString());
-                docId.setText(Objects.requireNonNull(dataSnapshot.child(userId).child("member_ID").getValue()).toString());
+//                docName.setText(Objects.requireNonNull(dataSnapshot.child(userId).child("name").getValue()).toString());
+//                docSpecialisation.setText(Objects.requireNonNull(dataSnapshot.child(userId).child("specialisation").getValue()).toString());
+//                docId.setText(Objects.requireNonNull(dataSnapshot.child(userId).child("member_ID").getValue()).toString());
 
             }
 

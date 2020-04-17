@@ -75,9 +75,7 @@ public class PatientHistoryFragment extends Fragment {
         mReff.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Iterator<DataSnapshot> item = dataSnapshot.getChildren().iterator();
-                while(item.hasNext()) {
-                    DataSnapshot it = item.next();
+                for (DataSnapshot it : dataSnapshot.getChildren()) {
                     String temp = target.getText().toString();
                     temp += it.getKey() + " : ";
                     temp += it.getValue() + "\n";

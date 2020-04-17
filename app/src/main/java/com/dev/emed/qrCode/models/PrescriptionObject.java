@@ -1,7 +1,5 @@
 package com.dev.emed.qrCode.models;
 
-import java.util.ArrayList;
-
 public class PrescriptionObject {
     public String medName;
     public String medDose;
