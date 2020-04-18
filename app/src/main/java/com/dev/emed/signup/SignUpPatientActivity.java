@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dev.emed.R;
+import com.dev.emed.models.SignUp_Patient;
 import com.dev.emed.patient.PatientActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;

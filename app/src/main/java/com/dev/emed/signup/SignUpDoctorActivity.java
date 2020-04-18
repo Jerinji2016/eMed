@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.dev.emed.R;
 import com.dev.emed.doctor.DoctorActivity;
+import com.dev.emed.models.SignUp_Doctor;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
