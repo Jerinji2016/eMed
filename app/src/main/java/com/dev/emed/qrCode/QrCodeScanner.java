@@ -26,7 +26,7 @@ public class QrCodeScanner extends AppCompatActivity implements ZXingScannerView
     private static final int MY_CAMERA_REQUEST_CODE = 6515;
     private static final String HUAWEI = "huawei";
     ZXingScannerView qrCodeScanner;
-    private String userType;
+    private String userType, userId;
 
     private static final String TAG = "QrCodeScanner";
 
@@ -37,6 +37,8 @@ public class QrCodeScanner extends AppCompatActivity implements ZXingScannerView
 
         Intent i = getIntent();
         userType = i.getStringExtra("userType");
+        userId = i.getStringExtra("userId");
+
         Log.d(TAG, "onCreate: ====================="+userType);
 
         qrCodeScanner = findViewById(R.id.qr_code_scanner);
@@ -86,11 +88,13 @@ public class QrCodeScanner extends AppCompatActivity implements ZXingScannerView
                 Log.d(TAG, "handleResult: DOCTOR - PatientDetailsActivity");
                 Intent i = new Intent(getApplicationContext(), PatientDetailsActivity.class);
                 i.putExtra("dcy_text", decryptedString);
+                i.putExtra("userId", userId);
                 startActivity(i);
             } else {
                 Log.d(TAG, "handleResult: PATIENT - PrescriptionDetailsActivity");
                 Intent i = new Intent(getApplicationContext(), PrescriptionDetailsActivity.class);
                 i.putExtra("dcy_text", decryptedString);
+                i.putExtra("userId", userId);
                 startActivity(i);
             }
         } else {

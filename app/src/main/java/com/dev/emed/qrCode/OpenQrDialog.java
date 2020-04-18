@@ -1,6 +1,5 @@
 package com.dev.emed.qrCode;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,10 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import com.dev.emed.R;
-import com.dev.emed.doctor.DoctorActivity;
 import com.dev.emed.doctor.PrescribeMedicineFragment;
 import com.dev.emed.qrCode.helper.QRCodeHelper;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;

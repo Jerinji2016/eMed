@@ -1,7 +1,6 @@
 package com.dev.emed.patient;
 
 import android.content.Intent;
-import android.media.audiofx.DynamicsProcessing;
 import android.os.Bundle;
 import android.view.View;
 
@@ -41,7 +40,7 @@ public class PatientActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(PatientActivity.this, QrCodeScanner.class);
                 i.putExtra("userType", "Patient");
-                i.putExtra("userName", ptn_userid);
+                i.putExtra("userId", ptn_userid);
                 startActivity(i);
             }
         });

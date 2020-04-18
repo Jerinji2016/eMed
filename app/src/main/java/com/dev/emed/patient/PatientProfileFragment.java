@@ -1,7 +1,6 @@
 package com.dev.emed.patient;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,18 +13,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.dev.emed.MainActivity;
 import com.dev.emed.R;
+import com.dev.emed.models.PatientDetailObject;
 import com.dev.emed.qrCode.OpenQrDialog;
 import com.dev.emed.qrCode.helper.EncryptionHelper;
-import com.dev.emed.qrCode.models.PatientDetailObject;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import java.util.List;
 import java.util.Objects;
 
 public class PatientProfileFragment extends Fragment {
@@ -76,8 +76,7 @@ public class PatientProfileFragment extends Fragment {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), MainActivity.class);
-                startActivity(i);
+                getActivity().finish();
             }
         });
 
@@ -126,11 +125,28 @@ public class PatientProfileFragment extends Fragment {
                 ptnUserWeight.setText((String) ptnUser.child("physic").child("weight").getValue());
                 ptnUserHeight.setText((String) ptnUser.child("physic").child("height").getValue());
                 ptnUserMedConditions.setText((String) ptnUser.child("medicalConditions").getValue());
+
+                if (ptnUser.child("lastConsultedDoc").getValue() != null)
+                    ptnUserLastDoc.setText((String) ptnUser.child("lastConsultedDoc").getValue());
+                if (ptnUser.child("currentMed").getValue() != null) {
+                    DataSnapshot data = ptnUser.child("currentMed");
+                    GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {
+                    };
+                    List list = data.getValue(t);
+                    Log.d(TAG, "\nonDataChange: " + data + "\n\n" + list);
+
+                    String str="";
+                    for (Object s : list) {
+                        Log.d(TAG, "onDataChange: "+s.getClass());
+                        str += s+"\n";
+                    }
+                    ptnUserCurrentMed.setText(str);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d(TAG, "onCancelled: "+databaseError.getMessage());
+                Log.d(TAG, "onCancelled: " + databaseError.getMessage());
             }
         });
         // Inflate the layout for this fragment
