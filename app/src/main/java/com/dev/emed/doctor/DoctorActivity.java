@@ -95,7 +95,7 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
             drawer.closeDrawer(GravityCompat.START);
         }
         else {
-            super.onBackPressed();
+            finish();
         }
     }
 
@@ -107,6 +107,9 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
         data.putString("userId", doc_userid);
 
         switch (item.getItemId()) {
+            case R.id.doc_profile:
+                fragment = new DoctorProfileFragment();
+                break;
             case R.id.doc_prescription:
                 fragment = new PrescribeMedicineFragment();
                 break;
@@ -115,9 +118,6 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
                 break;
             case R.id.doc_med_prescribed:
                 fragment = new PrescriptionHistoryFragment();
-                break;
-            case R.id.doc_profile:
-                fragment = new DoctorProfileFragment();
                 break;
             case R.id.doc_logout:
                 Intent i = new Intent(this, MainActivity.class);

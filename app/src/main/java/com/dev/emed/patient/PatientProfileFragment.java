@@ -94,7 +94,7 @@ public class PatientProfileFragment extends Fragment {
                 Bundle data = new Bundle();
                 data.putString("enc_text", enc);
                 dialog.setArguments(data);
-                dialog.show(getFragmentManager(), "QR Code Dialog");
+                dialog.show(getFragmentManager(), "QR Code Patient Profile");
             }
         });
 
@@ -136,10 +136,9 @@ public class PatientProfileFragment extends Fragment {
                     Log.d(TAG, "\nonDataChange: " + data + "\n\n" + list);
 
                     String str="";
-                    for (Object s : list) {
-                        Log.d(TAG, "onDataChange: "+s.getClass());
+                    for (Object s : list)
                         str += s+"\n";
-                    }
+
                     ptnUserCurrentMed.setText(str);
                 }
             }

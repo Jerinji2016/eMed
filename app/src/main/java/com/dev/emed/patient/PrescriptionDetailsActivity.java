@@ -99,9 +99,9 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                     TextView space2 = new TextView(getApplicationContext());
 
                     space1.setLayoutParams(new TableRow.LayoutParams(2, TableRow.LayoutParams.MATCH_PARENT, 0f));
-                    space1.setBackgroundColor(getResources().getColor(R.color.borderBlacklackColor));
+                    space1.setBackgroundColor(getResources().getColor(R.color.borderBlackColor));
                     space2.setLayoutParams(new TableRow.LayoutParams(2, TableRow.LayoutParams.MATCH_PARENT, 0f));
-                    space2.setBackgroundColor(getResources().getColor(R.color.borderBlacklackColor));
+                    space2.setBackgroundColor(getResources().getColor(R.color.borderBlackColor));
 
                     PrescriptionObject pObj = new PrescriptionObject(
                             Objects.requireNonNull(item.child("medName").getValue()).toString(),
@@ -110,12 +110,10 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                             Objects.requireNonNull(item.child("medTime").getValue()).toString(),
                             Objects.requireNonNull(item.child("medFood").getValue()).toString());
 
-                    Log.d(TAG, "onDataChange: " + pObj.medName + " " + pObj.medDose + " " + pObj.medDur + " " + pObj.medFood + " " + pObj.medTime + " ");
-
                     pMedName.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 3f));
                     pMedName.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                    pMedName.setText(pObj.medName);
                     pMedName.setPadding(0, 10, 0, 10);
+                    pMedName.setText(pObj.medName);
                     tr.addView(pMedName);
                     tr.addView(space1);
 

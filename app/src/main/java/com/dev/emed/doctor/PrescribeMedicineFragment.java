@@ -22,10 +22,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.dev.emed.R;
-import com.dev.emed.qrCode.OpenQrDialog;
-import com.dev.emed.qrCode.helper.EncryptionHelper;
 import com.dev.emed.models.DocQrObject;
 import com.dev.emed.models.PrescriptionObject;
+import com.dev.emed.qrCode.OpenQrDialog;
+import com.dev.emed.qrCode.helper.EncryptionHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.primitives.Chars;
 import com.google.firebase.database.DatabaseReference;
@@ -61,6 +61,8 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
     private String medPtnGender;
     private String consultId;
 
+    private Bundle args;
+
     private ArrayList<String> medArray = new ArrayList<>();
 
     @Nullable
@@ -68,10 +70,10 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.doc_fragment_prescribe_medicine, container, false);
 
-        Bundle args = getArguments();
+        args = getArguments();
         docUserId = Objects.requireNonNull(args).getString("userId");
 
-        if (args != null && !args.containsKey("ptnUserId")) {
+        if (args.getString("ptnName") == null || args.getString("ptnAge") == null || args.getString("ptnGender") == null) {
             ptnAvailable = false;
             Toast.makeText(getActivity(), "Patient UserID Not Found", Toast.LENGTH_SHORT).show();
             view.findViewById(R.id.med_ptn_details).setVisibility(View.VISIBLE);
@@ -98,27 +100,25 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
             @Override
             public void onClick(View v) {
 
-                if (medPtnNameInput.getText().toString().trim().isEmpty() ||
-                        medPtnAgeInput.getText().toString().trim().isEmpty() ||
-                        medPtnGenderInput.getCheckedRadioButtonId() == -1) {
-                    // Patient Details empty or no medicine
-                    Snackbar snackbar = Snackbar.make(view, "Patient Details empty or No Medicine Added", Snackbar.LENGTH_LONG);
-                    snackbar.show();
-                } else {
-                    medPtnName = medPtnNameInput.getText().toString().trim();
-                    medPtnAge = medPtnAgeInput.getText().toString().trim();
-                    RadioButton medPtnGenderRadio = view.findViewById(medPtnGenderInput.getCheckedRadioButtonId());
-                    medPtnGender = medPtnGenderRadio.getText().toString();
+                if (checkUserEmpty() && medArray.size() != 0) {
+                    if(!ptnAvailable) {
+                        medPtnName = medPtnNameInput.getText().toString().trim();
+                        medPtnAge = medPtnAgeInput.getText().toString().trim();
+                        RadioButton medPtnGenderRadio = view.findViewById(medPtnGenderInput.getCheckedRadioButtonId());
+                        medPtnGender = medPtnGenderRadio.getText().toString();
+                    } else {
+                        medPtnName = args.getString("ptnName");
+                        medPtnAge = args.getString("ptnAge");
+                        medPtnGender = args.getString("ptnGender");
+                    }
                     consultId = idGenerator();
-
-                    Toast.makeText(getActivity(), "Profile Updated", Toast.LENGTH_SHORT).show();
 
                     DocQrObject qrData = new DocQrObject();
                     qrData.setDocUserId(docUserId);
                     qrData.setConsultId(consultId);
 
                     String str = new Gson().toJson(qrData);
-                    Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), str+"\n"+medPtnName+" "+medPtnAge+" "+medPtnGender, Toast.LENGTH_SHORT).show();
                     String enc = EncryptionHelper.getInstance()
                             .encryptionString(str)
                             .encryptMsg();
@@ -128,9 +128,11 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
                     data.putString("enc_text", enc);
                     dialog.setArguments(data);
                     dialog.setTargetFragment(PrescribeMedicineFragment.this, 1337);
-                    dialog.show(getParentFragmentManager(), "QR Code Dialog");
-
-                    Log.d(TAG, "onClick: Dialog Fragment Created");
+                    dialog.show(getFragmentManager(), "QR Code Doctor Prescription");
+                }
+                else {
+                    Snackbar snackbar = Snackbar.make(view, "Patient details empty or No Medicines added", Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 }
             }
         });
@@ -213,21 +215,6 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
     }
 
     private boolean checkEmpty() {
-        if (!ptnAvailable) {
-            if (medPtnNameInput.getText().toString().trim().isEmpty()) {
-                Toast.makeText(getActivity(), "Please Enter Patient name", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if (medPtnAgeInput.getText().toString().trim().isEmpty()) {
-                Toast.makeText(getActivity(), "Patient Age was not provided", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if (medPtnGenderInput.getCheckedRadioButtonId() == -1) {
-                Toast.makeText(getActivity(), "Gender was not set", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        }
-
         if (medNameInput.getText().toString().trim().isEmpty()) {
             Toast.makeText(getActivity(), "Medicine Name cannot be Empty", Toast.LENGTH_SHORT).show();
             return false;
@@ -245,6 +232,26 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
             return false;
         }
         return true;
+    }
+
+    private boolean checkUserEmpty() {
+        if (!ptnAvailable) {
+            String str = "";
+            if (medPtnNameInput.getText().toString().trim().isEmpty()) {
+                Toast.makeText(getActivity(), "Patient Name is Empty", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (medPtnAgeInput.getText().toString().trim().isEmpty()) {
+                Toast.makeText(getActivity(), "Patient age is not set", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (medPtnGenderInput.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(getActivity(), "Patient Gender is not checked", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return true;
+        } else
+            return true;
     }
 
     @Override
