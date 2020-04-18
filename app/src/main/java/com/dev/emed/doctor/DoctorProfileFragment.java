@@ -45,6 +45,7 @@ public class DoctorProfileFragment extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), QrCodeScanner.class);
                 i.putExtra("userType", "Doctor");
+                i.putExtra("userId", userId);
                 startActivity(i);
             }
         });
