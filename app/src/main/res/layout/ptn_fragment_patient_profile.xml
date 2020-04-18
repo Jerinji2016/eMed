@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,23 +16,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:padding="15dp"
-            android:weightSum="2"
             android:background="@android:drawable/dialog_holo_light_frame"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="15dp"
+            android:weightSum="2">
 
             <ImageView
                 android:layout_width="181dp"
                 android:layout_height="160dp"
                 android:layout_weight=".5"
-                android:src="@drawable/profile_icon"
-                android:contentDescription="@string/display_picture" />
+                android:contentDescription="@string/display_picture"
+                android:src="@drawable/profile_icon" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5"
                 android:layout_gravity="center"
+                android:layout_weight="1.5"
                 android:orientation="vertical">
 
                 <TextView
@@ -184,8 +183,8 @@
 
                     <TextView
                         android:id="@+id/ptn_profile_last_doc"
-                        android:text=" -- "
-                        style="@style/PtnTableValues" />
+                        style="@style/PtnTableValues"
+                        android:text=" -- " />
                 </TableRow>
 
                 <TableRow
@@ -199,8 +198,8 @@
 
                     <TextView
                         android:id="@+id/ptn_profile_current_medicine"
-                        android:text=" -- "
-                        style="@style/PtnTableValues" />
+                        style="@style/PtnTableValues"
+                        android:text=" -- " />
                 </TableRow>
             </TableLayout>
         </ScrollView>
@@ -210,14 +209,14 @@
         android:id="@+id/ptn_create_qr_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:paddingVertical="15dp"
-        android:paddingHorizontal="25dp"
-        android:textSize="20sp"
-        android:elevation="12dp"
         android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
         android:background="@drawable/btn_primary_default"
+        android:elevation="12dp"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="15dp"
         android:text="@string/create_qr"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
 
 </RelativeLayout>

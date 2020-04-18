@@ -1,4 +1,4 @@
-package com.dev.emed.signup;
+package com.dev.emed.models;
 
 public class SignUp_Doctor {
     private String Name;

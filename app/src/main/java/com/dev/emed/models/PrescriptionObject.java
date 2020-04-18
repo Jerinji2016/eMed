@@ -1,4 +1,4 @@
-package com.dev.emed.qrCode.models;
+package com.dev.emed.models;
 
 public class PrescriptionObject {
     public String medName;
