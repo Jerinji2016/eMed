@@ -32,7 +32,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -280,6 +282,12 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
             mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).setValue(obj);
             n++;
         }
+
+        SimpleDateFormat dateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
+        Calendar cal = Calendar.getInstance();
+        String date = dateFormat.format(cal.getTime());
+
+        mReff.child("consultants").child(consultId).child("consultDate").setValue(date);
         mReff.child("consultants").child(consultId).child("ptnName").setValue(medPtnName);
         mReff.child("consultants").child(consultId).child("ptnAge").setValue(medPtnAge);
         mReff.child("consultants").child(consultId).child("ptnGender").setValue(medPtnGender);
