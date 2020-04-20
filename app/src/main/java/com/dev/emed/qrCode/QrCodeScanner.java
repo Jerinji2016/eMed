@@ -92,14 +92,12 @@ public class QrCodeScanner extends AppCompatActivity implements ZXingScannerView
                 i.putExtra("dcy_text", decryptedString);
                 i.putExtra("userId", userId);
                 startActivity(i);
-                finish();
             } else {
                 Log.d(TAG, "handleResult: PATIENT - PrescriptionDetailsActivity");
                 Intent i = new Intent(getApplicationContext(), PrescriptionDetailsActivity.class);
                 i.putExtra("dcy_text", decryptedString);
                 i.putExtra("userId", userId);
                 startActivity(i);
-                finish();
             }
         } else {
             Toast.makeText(this, "No Result, Please scan again!", Toast.LENGTH_SHORT).show();
