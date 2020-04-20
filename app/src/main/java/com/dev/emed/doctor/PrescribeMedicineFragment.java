@@ -96,12 +96,14 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
         Button addMedicineBtn = view.findViewById(R.id.add_medicine_btn);
         Button shareMedQrBtn = view.findViewById(R.id.share_prescription_btn);
 
+        consultId = idGenerator();
+
         shareMedQrBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (checkUserEmpty() && medArray.size() != 0) {
-                    if(!ptnAvailable) {
+                    if (!ptnAvailable) {
                         medPtnName = medPtnNameInput.getText().toString().trim();
                         medPtnAge = medPtnAgeInput.getText().toString().trim();
                         RadioButton medPtnGenderRadio = view.findViewById(medPtnGenderInput.getCheckedRadioButtonId());
@@ -111,7 +113,6 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
                         medPtnAge = args.getString("ptnAge");
                         medPtnGender = args.getString("ptnGender");
                     }
-                    consultId = idGenerator();
 
                     DocQrObject qrData = new DocQrObject();
                     qrData.setDocUserId(docUserId);
@@ -129,8 +130,9 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
                     dialog.setArguments(data);
                     dialog.setTargetFragment(PrescribeMedicineFragment.this, 1337);
                     dialog.show(getFragmentManager(), "QR Code Doctor Prescription");
-                }
-                else {
+
+                    dbUpdate();
+                } else {
                     Snackbar snackbar = Snackbar.make(view, "Patient details empty or No Medicines added", Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
@@ -284,8 +286,17 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
 
         DatabaseReference mReff = FirebaseDatabase.getInstance().getReference("Doctor").child(docUserId);
         int n = 0;
+
         for (PrescriptionObject obj : medPrescription) {
-            Log.d(TAG, "Loop: " + obj);
+            Log.d(TAG, "Loop: " + obj.medName);
+
+//            mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).child("medName").setValue(obj.medName);
+//            mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).child("medDose").setValue(obj.medDose);
+//            mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).child("medDur").setValue(obj.medDur);
+//            mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).child("medTime").setValue(obj.medName);
+//            mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).child("medFood").setValue(obj.medName);
+
+
             mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).setValue(obj);
             n++;
         }

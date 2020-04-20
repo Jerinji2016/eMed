@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,21 +40,29 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
     int n;
     final ArrayList<String> medList = new ArrayList<>();
 
+    DatabaseReference docReff, ptnReff;
+    ValueEventListener docValueEventListener, ptnValueEventListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription_details);
 
+        Log.d(TAG, "onCreate: Prescription Detail Activity Created");
         Intent i = getIntent();
         String decryptedString = i.getStringExtra("dcy_text");
         userId = i.getStringExtra("userId");
         Log.d(TAG, "onCreate: User ID :" + userId);
+
+        Log.d(TAG, "onCreate: Decrypted String : " + decryptedString);
 
         DocQrObject userObj = new Gson()
                 .fromJson(decryptedString, DocQrObject.class);
 
         docId = userObj.getDocUserId();
         prescriptionId = userObj.getConsultId();
+
+        Log.d(TAG, "onCreate: DocId: " + docId + "\nPrescriptionId: " + prescriptionId);
 
         final TextView pId = findViewById(R.id.doc_prescription_ptn_id);
         final TextView pName = findViewById(R.id.doc_prescription_ptn_name);
@@ -67,17 +76,20 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent i = new Intent(getApplicationContext(), PatientActivity.class);
+                i.putExtra("userId", userId);
+                startActivity(i);
             }
         });
 
-        DatabaseReference mReff = FirebaseDatabase.getInstance().getReference("Doctor").child(docId);
-        mReff.addValueEventListener(new ValueEventListener() {
+        docReff = FirebaseDatabase.getInstance().getReference("Doctor").child(docId);
+        docValueEventListener = new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "\nonDataChange: User " + dataSnapshot.child("name"));
                 docName = (String) dataSnapshot.child("name").getValue();
+                Log.d(TAG, "onDataChange: "+docName+" or "+ (String) dataSnapshot.child("name").getValue());
                 pDocName.setText(docName + "\n" + docId);
 
                 dataSnapshot = dataSnapshot.child("consultants").child(prescriptionId);
@@ -104,11 +116,11 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                     space2.setBackgroundColor(getResources().getColor(R.color.borderBlackColor));
 
                     PrescriptionObject pObj = new PrescriptionObject(
-                            Objects.requireNonNull(item.child("medName").getValue()).toString(),
-                            Objects.requireNonNull(item.child("medDose").getValue()).toString(),
-                            Objects.requireNonNull(item.child("medDur").getValue()).toString(),
-                            Objects.requireNonNull(item.child("medTime").getValue()).toString(),
-                            Objects.requireNonNull(item.child("medFood").getValue()).toString());
+                            (String) item.child("medName").getValue(),
+                            (String) item.child("medDose").getValue(),
+                            (String) item.child("medDur").getValue(),
+                            (String) item.child("medTime").getValue(),
+                            (String) item.child("medFood").getValue());
 
                     pMedName.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 3f));
                     pMedName.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -133,68 +145,65 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                     tr.addView(pMedInst);
 
                     targetTable.addView(tr);
+
+                    //  Add Details to Patient DB
+
+                    SimpleDateFormat dateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
+                    Calendar cal = Calendar.getInstance();
+                    String date = dateFormat.format(cal.getTime());
+
+                    PatientMedUpdateObject ptnMed = new PatientMedUpdateObject(docName, docId, prescriptionId, date, medList);
+                    Log.d(TAG, "\nAdd to Ptn: Date: " + date + "\nDocName:" + docName + "\ndocID: " + docId);
+                    Log.d(TAG, "onCreate: UserId "+userId);
+
+                    ptnReff = FirebaseDatabase.getInstance().getReference("Patient").child(userId);
+
+                    //  Check count of medHistory and then add newer med values
+                    ptnReff.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            n = (int) dataSnapshot.child("medHistory").getChildrenCount();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.d(TAG, "onCancelled: " + databaseError.getMessage());
+                        }
+                    });
+
+                    ptnReff.child("lastConsultedDoc").setValue(docName);
+                    ptnReff.child("currentMed").setValue(medList);
+                    ptnReff = ptnReff.child("medHistory");
+                    ptnReff.child(String.valueOf(n)).setValue(ptnMed);
+                    Log.d(TAG, "\nonClick: Number = " + n);
+                    Log.d(TAG, "\nonClick: Object : \n" + ptnMed);
+
+                    Toast.makeText(getApplicationContext(), "Medicine Added to Ptn DB", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-        });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        SimpleDateFormat dateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
-        Calendar cal = Calendar.getInstance();
-        String date = dateFormat.format(cal.getTime());
-
-        PatientMedUpdateObject ptnMed = new PatientMedUpdateObject(docName, docId, prescriptionId, date, medList);
-
-        Log.d(TAG, "\nonClick: Date: " + date + "\nDocName:" + docName + "\ndocID: " + docId);
-        DatabaseReference mReff = FirebaseDatabase.getInstance().getReference("Patient").child(userId);
-
-        //  Check count of medHistory and then add newer med values
-        mReff.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                n = (int) dataSnapshot.child("medHistory").getChildrenCount();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d(TAG, "onCancelled: " + databaseError.getMessage());
             }
-        });
-        mReff.child("lastConsultedDoc").setValue(docName);
-        mReff.child("currentMed").setValue(medList);
-        mReff = mReff.child("medHistory");
-        mReff.child(String.valueOf(n)).setValue(ptnMed);
-        Log.d(TAG, "\nonClick: Number = "+n);
-        Log.d(TAG, "\nonClick: Object : \n"+ptnMed);
+        };
+
+        docReff.addValueEventListener(docValueEventListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        docReff.removeEventListener(docValueEventListener);
+        ptnReff.removeEventListener(ptnValueEventListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        docReff.removeEventListener(docValueEventListener);
+        ptnReff.removeEventListener(ptnValueEventListener);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +36,9 @@ public class PatientDetailsActivity extends AppCompatActivity {
 
     private String userId;
 
+    DatabaseReference mReff;
+    ValueEventListener listener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,8 @@ public class PatientDetailsActivity extends AppCompatActivity {
         Intent i = getIntent();
         String decryptedString = i.getStringExtra("dcy_text");
         userId = i.getStringExtra("userId");
+
+        Log.d(TAG, "onCreate: Decrypted String : "+decryptedString);
 
         PatientDetailObject patient = new Gson()
                 .fromJson(decryptedString, PatientDetailObject.class);
@@ -64,8 +68,9 @@ public class PatientDetailsActivity extends AppCompatActivity {
         userIdText.setText(patient.getUserId());
 
         myPtn = patient.getUserId();
-        DatabaseReference mReff = FirebaseDatabase.getInstance().getReference("Patient");
-        mReff.addValueEventListener(new ValueEventListener() {
+        Log.d(TAG, "onCreate: \nPatient Name -" + patient.getName() + "\nPatient Id - "+patient.getUserId());
+        mReff = FirebaseDatabase.getInstance().getReference("Patient");
+        listener = new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -86,7 +91,9 @@ public class PatientDetailsActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d(TAG, "onCancelled: " + databaseError.getMessage());
             }
-        });
+        };
+
+        mReff.addValueEventListener(listener);
 
         Button showHistory = findViewById(R.id.show_ptn_med_history_btn);
         Button cancelPres = findViewById(R.id.cancel_prescription);
@@ -97,20 +104,32 @@ public class PatientDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: User : "+userId);
-                Fragment fragment = new PrescribeMedicineFragment();
-                FragmentManager fm = getSupportFragmentManager();
 
-                Bundle data = new Bundle();
-                data.putString("userId", userId);
-                data.putString("ptnName", (String) ptnDetails.child("name").getValue());
+                Intent i = new Intent(getApplicationContext(), PrescribeMedicineActivity.class);
+
+                i.putExtra("userId", userId);
+                i.putExtra("ptnName", (String) ptnDetails.child("name").getValue());
 
                 long age = (long) ptnDetails.child("age").getValue();
-                data.putString("ptnAge", Long.toString(age));
-                data.putString("ptnGender", (String) ptnDetails.child("gender").getValue());
-                fragment.setArguments(data);
-                findViewById(R.id.ptn_detail_layout).setVisibility(View.GONE);
-                findViewById(R.id.prescribe_medicine_inflate_layout).setVisibility(View.VISIBLE);
-                fm.beginTransaction().replace(R.id.prescribe_medicine_inflate_layout, fragment).commit();
+                i.putExtra("ptnAge", Long.toString(age));
+                i.putExtra("ptnGender", (String) ptnDetails.child("gender").getValue());
+
+                startActivity(i);
+
+//                Fragment fragment = new PrescribeMedicineFragment();
+//                FragmentManager fm = getSupportFragmentManager();
+//
+//                Bundle data = new Bundle();
+//                data.putString("userId", userId);
+//                data.putString("ptnName", (String) ptnDetails.child("name").getValue());
+//
+//
+//                data.putString("ptnAge", Long.toString(age));
+//                data.putString("ptnGender", (String) ptnDetails.child("gender").getValue());
+//                fragment.setArguments(data);
+//                findViewById(R.id.ptn_detail_layout).setVisibility(View.GONE);
+//                findViewById(R.id.prescribe_medicine_inflate_layout).setVisibility(View.VISIBLE);
+//                fm.beginTransaction().replace(R.id.prescribe_medicine_inflate_layout, fragment).commit();
             }
         });
 
@@ -200,14 +219,19 @@ public class PatientDetailsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        View v = findViewById(R.id.ptn_detail_layout);
+        finish();
+    }
 
-        if(v.getVisibility() == View.VISIBLE)
-            super.onBackPressed();
-        else {
-            v.setVisibility(View.VISIBLE);
-            findViewById(R.id.prescribe_medicine_inflate_layout).setVisibility(View.GONE);
-        }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mReff.removeEventListener(listener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mReff.removeEventListener(listener);
     }
 }
 

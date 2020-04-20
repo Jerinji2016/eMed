@@ -25,17 +25,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class DoctorProfileFragment extends Fragment {
     private View view;
     private String userId;
+
+    public DatabaseReference reff;
+    public ValueEventListener listener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.doc_fragment_profile, container, false);
 
-        DatabaseReference reff = FirebaseDatabase.getInstance().getReference("Doctor");
-        userId = Objects.requireNonNull(getArguments()).getString("userId");
+        reff = FirebaseDatabase.getInstance().getReference("Doctor");
+        userId = getArguments().getString("userId");
 
         ImageView logout = view.findViewById(R.id.logout_btn);
         Button docScanBtn = view.findViewById(R.id.doc_scan_btn);
@@ -58,7 +63,7 @@ public class DoctorProfileFragment extends Fragment {
             }
         });
 
-        reff.addValueEventListener(new ValueEventListener() {
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 TextView docName = view.findViewById(R.id.doc_name_text);
@@ -74,10 +79,42 @@ public class DoctorProfileFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("RF - SetProfile", databaseError.toString());
             }
-        });
+        };
 
+        reff.addValueEventListener(listener);
         return view;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: Doc Profile Fragment");
+        reff.removeEventListener(listener);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        reff.addValueEventListener(listener);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: Doc Profile Fragment");
+        reff.removeEventListener(listener);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

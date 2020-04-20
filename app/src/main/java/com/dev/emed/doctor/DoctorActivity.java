@@ -33,6 +33,9 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
 
     private static final String TAG = "DoctorActivity";
 
+    ValueEventListener listener;
+    DatabaseReference reff;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,22 +59,23 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
         final TextView navHeaderName = headerView.findViewById(R.id.nav_doc_name);
         final TextView navHeaderId = headerView.findViewById(R.id.nav_doc_reff_id);
 
-        final DatabaseReference reff = FirebaseDatabase.getInstance().getReference("Doctor");
-        reff.addListenerForSingleValueEvent(new ValueEventListener() {
+        reff = FirebaseDatabase.getInstance().getReference("Doctor").child(doc_userid);
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    navHeaderName.setText(Objects.requireNonNull(dataSnapshot.child(doc_userid).child("name").getValue()).toString());
-                    navHeaderId.setText(Objects.requireNonNull(dataSnapshot.child(doc_userid).child("member_ID").getValue()).toString());
-                }
-                else
-                    reff.removeEventListener(this);
+                navHeaderName.setText(Objects.requireNonNull(dataSnapshot.child("name").getValue()).toString());
+                navHeaderId.setText(Objects.requireNonNull(dataSnapshot.child("member_ID").getValue()).toString());
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("RF-NavSet", databaseError.toString());
+                Log.d("RF-NavSet", databaseError.getMessage());
             }
-        });
+        };
+
+        reff.addValueEventListener(listener);
+
+        Log.d(TAG, "onCreate: Added Value Event Listener for Nav Head");
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -93,26 +97,31 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
-            finish();
+        } else {
+            super.onBackPressed();
         }
     }
+
+    Fragment fragment, docProfileFrag;
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = new DoctorProfileFragment();
+        fragment = new DoctorProfileFragment();
         Bundle data = new Bundle();
         data.putString("userId", doc_userid);
 
         switch (item.getItemId()) {
             case R.id.doc_profile:
                 fragment = new DoctorProfileFragment();
+                docProfileFrag = fragment;
                 break;
             case R.id.doc_prescription:
-                fragment = new PrescribeMedicineFragment();
-                break;
+                //  fragment = new PrescribeMedicineFragment();
+                Intent j = new Intent(this, PrescribeMedicineActivity.class);
+                j.putExtra("userId", doc_userid);
+                startActivity(j);
+                return true;
             case R.id.doc_ptn_history:
                 fragment = new PatientHistoryFragment();
                 break;
@@ -129,5 +138,17 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        reff.removeEventListener(listener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reff.addValueEventListener(listener);
     }
 }

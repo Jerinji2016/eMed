@@ -26,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.List;
-import java.util.Objects;
 
 public class PatientProfileFragment extends Fragment {
 
@@ -34,6 +33,9 @@ public class PatientProfileFragment extends Fragment {
     private static final String TAG = "PatientProfileFragment";
 
     private PatientDetailObject myPtn;
+
+    private DatabaseReference mReff;
+    private ValueEventListener listener;
 
     public PatientProfileFragment() {
         // Required empty public constructor
@@ -56,7 +58,7 @@ public class PatientProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final String user = Objects.requireNonNull(getArguments()).getString(ARG_PARAM1);
+        final String user = getArguments().getString(ARG_PARAM1);
         myPtn = new PatientDetailObject();
 
         View view = inflater.inflate(R.layout.ptn_fragment_patient_profile, container, false);
@@ -98,8 +100,8 @@ public class PatientProfileFragment extends Fragment {
             }
         });
 
-        final DatabaseReference mReff = FirebaseDatabase.getInstance().getReference("Patient");
-        mReff.addValueEventListener(new ValueEventListener() {
+        mReff = FirebaseDatabase.getInstance().getReference("Patient");
+        listener = new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -135,9 +137,9 @@ public class PatientProfileFragment extends Fragment {
                     List list = data.getValue(t);
                     Log.d(TAG, "\nonDataChange: " + data + "\n\n" + list);
 
-                    String str="";
+                    String str = "";
                     for (Object s : list)
-                        str += s+"\n";
+                        str += s + "\n";
 
                     ptnUserCurrentMed.setText(str);
                 }
@@ -147,8 +149,22 @@ public class PatientProfileFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d(TAG, "onCancelled: " + databaseError.getMessage());
             }
-        });
+        };
+
+        mReff.addValueEventListener(listener);
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mReff.removeEventListener(listener);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mReff.removeEventListener(listener);
     }
 }

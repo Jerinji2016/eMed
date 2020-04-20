@@ -80,22 +80,26 @@ public class QrCodeScanner extends AppCompatActivity implements ZXingScannerView
     public void handleResult(Result result) {
         if (result != null) {
             Toast.makeText(this, "Scan Complete", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "handleResult: Scaned Result : "+result.getText());
             String decryptedString = EncryptionHelper
                     .getInstance()
                     .getDecryptionString(result.getText());
 
+            Log.d(TAG, "handleResult: Decrypted String : "+decryptedString);
             if (userType.equals("Doctor")) {
                 Log.d(TAG, "handleResult: DOCTOR - PatientDetailsActivity");
                 Intent i = new Intent(getApplicationContext(), PatientDetailsActivity.class);
                 i.putExtra("dcy_text", decryptedString);
                 i.putExtra("userId", userId);
                 startActivity(i);
+                finish();
             } else {
                 Log.d(TAG, "handleResult: PATIENT - PrescriptionDetailsActivity");
                 Intent i = new Intent(getApplicationContext(), PrescriptionDetailsActivity.class);
                 i.putExtra("dcy_text", decryptedString);
                 i.putExtra("userId", userId);
                 startActivity(i);
+                finish();
             }
         } else {
             Toast.makeText(this, "No Result, Please scan again!", Toast.LENGTH_SHORT).show();

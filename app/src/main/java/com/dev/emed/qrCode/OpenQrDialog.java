@@ -28,12 +28,11 @@ public class OpenQrDialog extends DialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
 
-        if (Objects.requireNonNull(Objects.requireNonNull(getDialog()).getOwnerActivity()).getClass().toString().equals("class com.dev.emed.doctor.DoctorActivity")) {
+        if (Objects.requireNonNull(Objects.requireNonNull(getDialog()).getOwnerActivity()).getClass().toString().equals("class com.dev.emed.doctor.PrescribeMedicineActivity")) {
             Toast.makeText(getActivity(), "Doctor.. Dismiss", Toast.LENGTH_SHORT).show();
             PrescribeMedicineFragment f = (PrescribeMedicineFragment) getTargetFragment();
-            if(f != null) {
-                f.dbUpdate();
-            }
+//            if(f != null)
+//                f.dbUpdate();
         } else {
             Toast.makeText(getActivity(), "Patient.. Dismiss", Toast.LENGTH_SHORT).show();
         }
@@ -44,7 +43,7 @@ public class OpenQrDialog extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.display_qr_dialog, container, true);
 
-        String enc = Objects.requireNonNull(getArguments()).getString("enc_text");
+        String enc = getArguments().getString("enc_text");
         Button dismisDialog = view.findViewById(R.id.dismiss_dialog);
 
         dismisDialog.setOnClickListener(new View.OnClickListener() {

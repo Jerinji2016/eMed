@@ -27,6 +27,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
     EditText username;
     EditText password;
     Switch userTypeSwitch;
@@ -35,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     String userid;
     String pass;
+
+    DatabaseReference reff;
+    ValueEventListener valListenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                 if(!userid.isEmpty() && !pass.isEmpty()){
-                    DatabaseReference reff = FirebaseDatabase.getInstance().getReference(userType);
-                    reff.addValueEventListener(new ValueEventListener() {
+                    reff = FirebaseDatabase.getInstance().getReference(userType);
+                    valListenter = new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if(dataSnapshot.child(userid).getValue() != null) {
@@ -107,7 +112,9 @@ public class MainActivity extends AppCompatActivity {
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                             Log.d("Read Failed: ", databaseError.toString());
                         }
-                    });
+                    };
+
+                    reff.addValueEventListener(valListenter);
                 }
                 else {
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.main_login_activity), "Please dont leave the fields Empty", Snackbar.LENGTH_LONG);
@@ -128,5 +135,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finishActivity(0);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: Activity Paused");
+        reff.removeEventListener(valListenter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: Activity Destroyed");
+        reff.removeEventListener(valListenter);
     }
 }

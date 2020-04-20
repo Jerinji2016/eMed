@@ -1,7 +1,7 @@
 package com.dev.emed.models;
 
 public class DocQrObject {
-    String docUserId, consultId;
+    public String docUserId, consultId;
 
     public DocQrObject() {
     }
