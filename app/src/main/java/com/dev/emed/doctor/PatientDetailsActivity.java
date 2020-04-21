@@ -95,7 +95,7 @@ public class PatientDetailsActivity extends AppCompatActivity {
 
         mReff.addValueEventListener(listener);
 
-        Button showHistory = findViewById(R.id.show_ptn_med_history_btn);
+        final Button showHistory = findViewById(R.id.show_ptn_med_history_btn);
         Button cancelPres = findViewById(R.id.cancel_prescription);
         Button createPrescription = findViewById(R.id.set_prescription);
         final LinearLayout medHistoryLayout = findViewById(R.id.ptn_detail_med_history_layout);
@@ -115,21 +115,6 @@ public class PatientDetailsActivity extends AppCompatActivity {
                 i.putExtra("ptnGender", (String) ptnDetails.child("gender").getValue());
 
                 startActivity(i);
-
-//                Fragment fragment = new PrescribeMedicineFragment();
-//                FragmentManager fm = getSupportFragmentManager();
-//
-//                Bundle data = new Bundle();
-//                data.putString("userId", userId);
-//                data.putString("ptnName", (String) ptnDetails.child("name").getValue());
-//
-//
-//                data.putString("ptnAge", Long.toString(age));
-//                data.putString("ptnGender", (String) ptnDetails.child("gender").getValue());
-//                fragment.setArguments(data);
-//                findViewById(R.id.ptn_detail_layout).setVisibility(View.GONE);
-//                findViewById(R.id.prescribe_medicine_inflate_layout).setVisibility(View.VISIBLE);
-//                fm.beginTransaction().replace(R.id.prescribe_medicine_inflate_layout, fragment).commit();
             }
         });
 
@@ -144,6 +129,7 @@ public class PatientDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 medHistoryLayout.setVisibility(View.VISIBLE);
+                showHistory.setClickable(false);
 
                 DataSnapshot medNameList = ptnDetails.child("medHistory");
                 if (medNameList.getValue() != null) {

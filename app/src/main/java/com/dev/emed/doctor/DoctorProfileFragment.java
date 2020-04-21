@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.dev.emed.MainActivity;
 import com.dev.emed.R;
@@ -44,6 +46,8 @@ public class DoctorProfileFragment extends Fragment {
 
         ImageView logout = view.findViewById(R.id.logout_btn);
         Button docScanBtn = view.findViewById(R.id.doc_scan_btn);
+        Button ptnHistoryBtn = view.findViewById(R.id.doc_patient_records);
+        Button createPrescriptionBtn = view.findViewById(R.id.doc_create_prescription);
 
         docScanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,11 +59,33 @@ public class DoctorProfileFragment extends Fragment {
             }
         });
 
+        ptnHistoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new PatientHistoryFragment();
+                FragmentManager fm = getParentFragmentManager();
+                Bundle data = new Bundle();
+                data.putString("userId", userId);
+                fragment.setArguments(data);
+
+                fm.beginTransaction().replace(R.id.doc_fragment_container, fragment).commit();
+                ((DoctorActivity)getActivity()).navigationView.setCheckedItem(R.id.doc_ptn_history);
+            }
+        });
+
+        createPrescriptionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), PrescribeMedicineActivity.class);
+                i.putExtra("userId", userId);
+                startActivity(i);
+            }
+        });
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), MainActivity.class);
-                startActivity(i);
+                getActivity().finish();
             }
         });
 

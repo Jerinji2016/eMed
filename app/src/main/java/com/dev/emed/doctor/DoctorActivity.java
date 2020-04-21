@@ -36,6 +36,8 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
     ValueEventListener listener;
     DatabaseReference reff;
 
+    NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,7 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
 
         drawer = findViewById(R.id.doctor_dashboard_layout);
 
-        NavigationView navigationView = findViewById(R.id.doc_nav_view);
+        navigationView = findViewById(R.id.doc_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         Intent intent = getIntent();
@@ -117,16 +119,12 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
                 docProfileFrag = fragment;
                 break;
             case R.id.doc_prescription:
-                //  fragment = new PrescribeMedicineFragment();
                 Intent j = new Intent(this, PrescribeMedicineActivity.class);
                 j.putExtra("userId", doc_userid);
                 startActivity(j);
                 return true;
             case R.id.doc_ptn_history:
                 fragment = new PatientHistoryFragment();
-                break;
-            case R.id.doc_med_prescribed:
-                fragment = new PrescriptionHistoryFragment();
                 break;
             case R.id.doc_logout:
                 Intent i = new Intent(this, MainActivity.class);

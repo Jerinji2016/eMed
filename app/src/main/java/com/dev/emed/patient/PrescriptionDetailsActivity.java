@@ -37,10 +37,10 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
     private String docId;
     private String prescriptionId;
     private String docName;
-    int n;
     final ArrayList<String> medList = new ArrayList<>();
 
     DatabaseReference docReff, ptnReff;
+    long n;
     ValueEventListener docValueEventListener, ptnValueEventListener;
 
     @Override
@@ -76,9 +76,7 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), PatientActivity.class);
-                i.putExtra("userId", userId);
-                startActivity(i);
+                finish();
             }
         });
 
@@ -89,7 +87,7 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "\nonDataChange: User " + dataSnapshot.child("name"));
                 docName = (String) dataSnapshot.child("name").getValue();
-                Log.d(TAG, "onDataChange: "+docName+" or "+ (String) dataSnapshot.child("name").getValue());
+                Log.d(TAG, "onDataChange: " + docName + " or " + (String) dataSnapshot.child("name").getValue());
                 pDocName.setText(docName + "\n" + docId);
 
                 dataSnapshot = dataSnapshot.child("consultants").child(prescriptionId);
@@ -145,41 +143,41 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                     tr.addView(pMedInst);
 
                     targetTable.addView(tr);
-
-                    //  Add Details to Patient DB
-
-                    SimpleDateFormat dateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
-                    Calendar cal = Calendar.getInstance();
-                    String date = dateFormat.format(cal.getTime());
-
-                    PatientMedUpdateObject ptnMed = new PatientMedUpdateObject(docName, docId, prescriptionId, date, medList);
-                    Log.d(TAG, "\nAdd to Ptn: Date: " + date + "\nDocName:" + docName + "\ndocID: " + docId);
-                    Log.d(TAG, "onCreate: UserId "+userId);
-
-                    ptnReff = FirebaseDatabase.getInstance().getReference("Patient").child(userId);
-
-                    //  Check count of medHistory and then add newer med values
-                    ptnReff.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            n = (int) dataSnapshot.child("medHistory").getChildrenCount();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Log.d(TAG, "onCancelled: " + databaseError.getMessage());
-                        }
-                    });
-
-                    ptnReff.child("lastConsultedDoc").setValue(docName);
-                    ptnReff.child("currentMed").setValue(medList);
-                    ptnReff = ptnReff.child("medHistory");
-                    ptnReff.child(String.valueOf(n)).setValue(ptnMed);
-                    Log.d(TAG, "\nonClick: Number = " + n);
-                    Log.d(TAG, "\nonClick: Object : \n" + ptnMed);
-
-                    Toast.makeText(getApplicationContext(), "Medicine Added to Ptn DB", Toast.LENGTH_SHORT).show();
                 }
+
+                //  Add Details to Patient DB
+                SimpleDateFormat dateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
+                Calendar cal = Calendar.getInstance();
+                String date = dateFormat.format(cal.getTime());
+
+                final PatientMedUpdateObject ptnMed = new PatientMedUpdateObject(docName, docId, prescriptionId, date, medList);
+                Log.d(TAG, "\nAdd to Ptn: Date: " + date + "\nDocName:" + docName + "\ndocID: " + docId);
+                Log.d(TAG, "onCreate: UserId " + userId);
+
+                ptnReff = FirebaseDatabase.getInstance().getReference("Patient").child(userId);
+
+                //  Check count of medHistory and then add newer med values
+                ptnReff.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        n = dataSnapshot.child("medHistory").getChildrenCount();
+                        Log.d(TAG, "onDataChange: " + dataSnapshot.getValue() + "\n" + dataSnapshot.child("medHistory").getChildrenCount());
+
+                        ptnReff.child("lastConsultedDoc").setValue(docName);
+                        ptnReff.child("currentMed").setValue(medList);
+                        ptnReff = ptnReff.child("medHistory");
+                        ptnReff.child(Long.toString(n)).setValue(ptnMed);
+                        Log.d(TAG, "\nonClick: Number = " + n);
+                        Log.d(TAG, "\nonClick: Object : \n" + ptnMed);
+
+                        Toast.makeText(getApplicationContext(), "Medicine Added to Ptn DB", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d(TAG, "onCancelled: " + databaseError.getMessage());
+                    }
+                });
             }
 
             @Override
@@ -194,16 +192,9 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        docReff.removeEventListener(docValueEventListener);
-        ptnReff.removeEventListener(ptnValueEventListener);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        docReff.removeEventListener(docValueEventListener);
-        ptnReff.removeEventListener(ptnValueEventListener);
+        if (docValueEventListener != null)
+            docReff.removeEventListener(docValueEventListener);
+        if (ptnValueEventListener != null)
+            ptnReff.removeEventListener(ptnValueEventListener);
     }
 }

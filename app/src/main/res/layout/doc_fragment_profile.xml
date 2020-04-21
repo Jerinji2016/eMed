@@ -55,6 +55,7 @@
             app:srcCompat="@drawable/ic_doc_img" />
 
         <LinearLayout
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -117,23 +118,25 @@
         app:layout_constraintVertical_bias="0.86">
 
         <Button
+            android:id="@+id/doc_patient_records"
             android:layout_width="140dp"
             android:layout_height="90dp"
             android:layout_weight="1"
             android:layout_margin="20dp"
             android:background="@drawable/btn_primary_default"
             android:gravity="center"
-            android:text="Patient\nRecord"
+            android:text="Patient\nRecords"
             android:textColor="#FFF"/>
 
         <Button
+            android:id="@+id/doc_create_prescription"
             android:layout_width="140dp"
             android:layout_height="90dp"
             android:layout_weight="1"
             android:layout_margin="20dp"
             android:background="@drawable/btn_primary_default"
             android:gravity="center"
-            android:text="Medical\nHistory"
+            android:text="New\nPrescription"
             android:textColor="#FFF" />
     </LinearLayout>
 

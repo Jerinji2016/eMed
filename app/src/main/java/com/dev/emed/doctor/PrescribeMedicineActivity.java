@@ -57,8 +57,6 @@ public class PrescribeMedicineActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
-
-
 }
 
 

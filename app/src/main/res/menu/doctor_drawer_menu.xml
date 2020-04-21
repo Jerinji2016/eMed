@@ -16,10 +16,6 @@
             android:icon="@drawable/ic_menu_ptn_history"
             android:title="@string/patient_history" />
         <item
-            android:id="@+id/doc_med_prescribed"
-            android:icon="@drawable/ic_menu_medicine_prescribed"
-            android:title="@string/prescription_history" />
-        <item
             android:id="@+id/doc_logout"
             android:icon="@drawable/ic_logout"
             android:title="@string/logout" />
