@@ -1,6 +1,11 @@
 package com.dev.emed.doctor;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,6 +25,7 @@ import androidx.fragment.app.FragmentManager;
 import com.dev.emed.MainActivity;
 import com.dev.emed.R;
 import com.dev.emed.models.DocQrObject;
+import com.dev.emed.patient.ReminderBroadcast;
 import com.dev.emed.qrCode.OpenQrDialog;
 import com.dev.emed.qrCode.helper.EncryptionHelper;
 import com.google.android.material.navigation.NavigationView;
@@ -43,10 +49,14 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
 
     NavigationView navigationView;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor);
+
+        createNotificationChannel();
 
         Toolbar toolbar = findViewById(R.id.doc_toolbar);
         toolbar.setTitle(R.string.dashboard);
@@ -65,6 +75,26 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
         View headerView = navigationView.getHeaderView(0);
         final TextView navHeaderName = headerView.findViewById(R.id.nav_doc_name);
         final TextView navHeaderId = headerView.findViewById(R.id.nav_doc_reff_id);
+
+        /*
+        * Notification Set Up
+        * */
+
+        Toast.makeText(this, "Reminder Set", Toast.LENGTH_SHORT).show();
+
+        Intent nIntent = new Intent(this, ReminderBroadcast.class);
+        PendingIntent nPendingIntent = PendingIntent.getBroadcast(this, 0, nIntent, 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        long currentTime = System.currentTimeMillis();
+        long tenSeconds = 1000 * 10;
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                currentTime + tenSeconds,
+                nPendingIntent);
+
+        /* ************************************* */
 
         reff = FirebaseDatabase.getInstance().getReference("Doctor").child(doc_userid);
         listener = new ValueEventListener() {
@@ -175,6 +205,20 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
         dialog.setArguments(data);
 
         dialog.show(getSupportFragmentManager(), "QR Code Doctor");
+    }
+
+    private void createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "eMedNotificationChannel";
+            String description = "Channel for eMed Notification";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel channel = new NotificationChannel("notifyMedicine", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel((channel));
+        }
     }
 }
 

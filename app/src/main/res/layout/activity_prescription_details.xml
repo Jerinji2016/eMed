@@ -21,19 +21,18 @@
 
     <LinearLayout
         android:id="@+id/linearLayout1"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/prescription_textview"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="5dp"
         android:orientation="horizontal"
         android:weightSum="3">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="10dp"
             android:text="Prescription ID : "
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -70,9 +69,8 @@
             android:id="@+id/doc_prescription_ptn_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             android:layout_weight="2.5"
-            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -117,7 +115,7 @@
             android:id="@+id/doc_prescription_ptn_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:textSize="16sp" />
     </LinearLayout>
@@ -247,11 +245,12 @@
         <Button
             android:id="@+id/prescription_close_btn"
             style="@style/themeWhiteButton"
+            android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:layout_marginVertical="5dp"
             android:layout_weight="1"
-            android:text="CLOSE" />
+            android:text="@string/close" />
     </LinearLayout>
 </RelativeLayout>

@@ -75,8 +75,9 @@
                         android:id="@+id/med_ptn_age"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="32"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:inputType="number"
+                        android:text="32" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -197,8 +198,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="eg. 5days"
-                        android:text="everyday" />
+                        android:hint="In days (0 for everyday)"
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -226,6 +227,7 @@
                             android:id="@+id/med_food_radio"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="horizontal"
                             android:weightSum="2">
 
@@ -248,9 +250,10 @@
                         <Spinner
                             android:id="@+id/med_time_select"
                             android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="10dp"
-                            android:layout_marginEnd="100dp"
                             android:entries="@array/inADay"
                             android:prompt="@string/select_one"
                             android:textAlignment="center" />

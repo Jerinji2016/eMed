@@ -145,7 +145,9 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
                 if (checkEmpty()) {
                     if (!medArray.contains(medNameInput.getText().toString())) {
                         final String medName = medNameInput.getText().toString().trim();
-                        String medDoseDur = medDoseInput.getText().toString().trim() + "\n" + medDurInput.getText().toString().trim();
+                        String medDoseDur = medDoseInput.getText().toString().trim() + "\n";
+                        String dur = medDurInput.getText().toString().trim();
+                        medDoseDur += (dur.equals("0")) ? "everyday" : dur + " days";
                         String medInstr = "", medTimeStr, medFoodStr;
 
                         medArray.add(medName);
@@ -253,7 +255,7 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
             Toast.makeText(getActivity(), "Medicine Dose cannot be Empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (medDoseInput.getText().toString().trim().isEmpty()) {
+        if (medDurInput.getText().toString().trim().isEmpty()) {
             Toast.makeText(getActivity(), "Medicine Duration cannot be Empty", Toast.LENGTH_SHORT).show();
             return false;
         }

@@ -63,29 +63,3 @@ public class OnSwipeListener  implements View.OnTouchListener {
 
     public void onSwipeLeft() {}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

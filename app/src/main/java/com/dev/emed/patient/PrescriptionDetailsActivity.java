@@ -1,7 +1,10 @@
 package com.dev.emed.patient;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -48,21 +51,15 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription_details);
 
-        Log.d(TAG, "onCreate: Prescription Detail Activity Created");
         Intent i = getIntent();
         String decryptedString = i.getStringExtra("dcy_text");
         userId = i.getStringExtra("userId");
-        Log.d(TAG, "onCreate: User ID :" + userId);
-
-        Log.d(TAG, "onCreate: Decrypted String : " + decryptedString);
 
         DocQrObject userObj = new Gson()
                 .fromJson(decryptedString, DocQrObject.class);
 
         docId = userObj.getDocUserId();
         prescriptionId = userObj.getConsultId();
-
-        Log.d(TAG, "onCreate: DocId: " + docId + "\nPrescriptionId: " + prescriptionId);
 
         final TextView pId = findViewById(R.id.doc_prescription_ptn_id);
         final TextView pName = findViewById(R.id.doc_prescription_ptn_name);
@@ -131,7 +128,7 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
 
                     pMedDose.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                     pMedDose.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                    pMedDose.setText(pObj.medDose + "\n" + pObj.medDur);
+                    pMedDose.setText(pObj.medDose + "\n" + ((pObj.medDur.equals("0")) ? "everyday" : pObj.medDur+" days"));
                     pMedDose.setPadding(0, 10, 0, 10);
                     tr.addView(pMedDose);
                     tr.addView(space2);
@@ -151,8 +148,6 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                 String date = dateFormat.format(cal.getTime());
 
                 final PatientMedUpdateObject ptnMed = new PatientMedUpdateObject(docName, docId, prescriptionId, date, medList);
-                Log.d(TAG, "\nAdd to Ptn: Date: " + date + "\nDocName:" + docName + "\ndocID: " + docId);
-                Log.d(TAG, "onCreate: UserId " + userId);
 
                 ptnReff = FirebaseDatabase.getInstance().getReference("Patient").child(userId);
 
@@ -167,10 +162,9 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                         ptnReff.child("currentMed").setValue(medList);
                         ptnReff = ptnReff.child("medHistory");
                         ptnReff.child(Long.toString(n)).setValue(ptnMed);
-                        Log.d(TAG, "\nonClick: Number = " + n);
-                        Log.d(TAG, "\nonClick: Object : \n" + ptnMed);
 
-                        Toast.makeText(getApplicationContext(), "Medicine Added to Ptn DB", Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(getApplicationContext(), "Medicines Added to Ptn DB", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -188,6 +182,8 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
 
         docReff.addValueEventListener(docValueEventListener);
     }
+
+
 
     @Override
     protected void onDestroy() {

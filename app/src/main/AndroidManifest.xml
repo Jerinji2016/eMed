@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".doctor.PrescribeMedicineActivity"></activity>
+        <activity android:name=".doctor.PrescribeMedicineActivity" />
         <activity android:name=".patient.PrescriptionDetailsActivity" />
         <activity android:name=".doctor.PatientDetailsActivity" />
         <activity android:name=".qrCode.QrCodeScanner" />
@@ -38,6 +38,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".patient.ReminderBroadcast" />
     </application>
 
 </manifest>

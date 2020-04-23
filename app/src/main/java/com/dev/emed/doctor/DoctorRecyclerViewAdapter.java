@@ -97,7 +97,8 @@ public class DoctorRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             TextView medIns = new TextView(context);
             medIns.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
             medIns.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            String str = item.child("medDose").getValue() + " - " + item.child("medDur").getValue();
+            String str = item.child("medDose").getValue() + " - ";
+            str +=  item.child("medDur").getValue() == "0" ? "everyday" : item.child("medDur").getValue() + " days";
             str += "\n" + item.child("medFood").getValue() + " - " + item.child("medTime").getValue();
             medIns.setText(str);
 
@@ -118,7 +119,7 @@ public class DoctorRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         return dataList.size();
     }
 
-    public class Item extends RecyclerView.ViewHolder {
+    public static class Item extends RecyclerView.ViewHolder {
         TextView pId, pDate, pName, pDetails;
         TableLayout medList;
         ImageButton qrCode;
