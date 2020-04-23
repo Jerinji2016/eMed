@@ -2,10 +2,13 @@ package com.dev.emed.doctor;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +40,7 @@ class DataList {
 }
 
 public class DoctorRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private Context context;
     private ArrayList<DataList> dataList = new ArrayList<>();
 
@@ -66,7 +70,47 @@ public class DoctorRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((Item) holder).pId.setText(dataList.get(position).id);
+        String pid = ((Item) holder).pId.getText().toString();
+        pid += dataList.get(position).id;
+        ((Item) holder).pId.setText(pid);
+
+        ((Item) holder).pDate.setText(dataList.get(position).date);
+        ((Item) holder).pName.setText(dataList.get(position).name);
+
+        String details = dataList.get(position).gender + " - " + dataList.get(position).age + " y.o.";
+        ((Item) holder).pDetails.setText(details);
+
+        //  Add rows of medicine
+        for (DataSnapshot item : dataList.get(position).prescription.getChildren()) {
+
+            TableRow tr = new TableRow(context);
+            tr.setPadding(0, 5, 0, 5);
+            tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+            tr.setWeightSum(2);
+            tr.setGravity(Gravity.CENTER);
+
+            TextView medName = new TextView(context);
+            medName.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+            medName.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            medName.setText((String) item.child("medName").getValue());
+
+            TextView medIns = new TextView(context);
+            medIns.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+            medIns.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            String str = item.child("medDose").getValue() + " - " + item.child("medDur").getValue();
+            str += "\n" + item.child("medFood").getValue() + " - " + item.child("medTime").getValue();
+            medIns.setText(str);
+
+            TextView space = new TextView(context);
+            space.setLayoutParams(new TableRow.LayoutParams(2, TableRow.LayoutParams.MATCH_PARENT, 0f));
+            space.setBackgroundColor(context.getResources().getColor(R.color.borderBlackColor));
+
+            tr.addView(medName);
+            tr.addView(space);
+            tr.addView(medIns);
+
+            ((Item)holder).medList.addView(tr);
+        }
     }
 
     @Override
@@ -77,16 +121,18 @@ public class DoctorRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public class Item extends RecyclerView.ViewHolder {
         TextView pId, pDate, pName, pDetails;
         TableLayout medList;
+        ImageButton qrCode;
 
         public Item(@NonNull View itemView) {
             super(itemView);
 
             pId = itemView.findViewById(R.id.prescription_id);
-            pName = itemView.findViewById(R.id.prescription_date);
-            pDate = itemView.findViewById(R.id.prescription_ptn_name);
+            pName = itemView.findViewById(R.id.prescription_ptn_name);
+            pDate = itemView.findViewById(R.id.prescription_date);
             pDetails = itemView.findViewById(R.id.prescription_ptn_details);
 
             medList = itemView.findViewById(R.id.prescription_list);
+            qrCode = itemView.findViewById(R.id.view_qr_btn);
         }
     }
 }

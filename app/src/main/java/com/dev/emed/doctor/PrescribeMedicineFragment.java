@@ -1,5 +1,6 @@
 package com.dev.emed.doctor;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,7 +63,6 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
     private String consultId;
 
     private Bundle args;
-
     private ArrayList<String> medArray = new ArrayList<>();
 
     @Nullable
@@ -119,7 +119,6 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
                     qrData.setConsultId(consultId);
 
                     String str = new Gson().toJson(qrData);
-//                    Toast.makeText(getActivity(), str+"\n"+medPtnName+" "+medPtnAge+" "+medPtnGender, Toast.LENGTH_SHORT).show();
                     String enc = EncryptionHelper.getInstance()
                             .encryptionString(str)
                             .encryptMsg();
@@ -128,7 +127,6 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
                     Bundle data = new Bundle();
                     data.putString("enc_text", enc);
                     dialog.setArguments(data);
-                    dialog.setTargetFragment(PrescribeMedicineFragment.this, 1337);
                     dialog.show(getFragmentManager(), "QR Code Doctor Prescription");
 
                     dbUpdate();
@@ -140,12 +138,13 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
         });
 
         addMedicineBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onClick(View v) {
 
                 if (checkEmpty()) {
                     if (!medArray.contains(medNameInput.getText().toString())) {
-                        String medName = medNameInput.getText().toString().trim();
+                        final String medName = medNameInput.getText().toString().trim();
                         String medDoseDur = medDoseInput.getText().toString().trim() + "\n" + medDurInput.getText().toString().trim();
                         String medInstr = "", medTimeStr, medFoodStr;
 
@@ -157,14 +156,16 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
 
                         medInstr = PrescriptionObject.timeFoodConverter(mealRadio.getText().toString(), medTimeStr);
 
-                        medPrescription.add(new PrescriptionObject(medName,
+                        final PrescriptionObject pObj = new PrescriptionObject(medName,
                                 medDoseInput.getText().toString().trim(),
                                 medDurInput.getText().toString().trim(),
-                                medTimeStr, medFoodStr));
+                                medTimeStr, medFoodStr);;
 
-                        TableLayout medListTarget = view.findViewById(R.id.medicine_list);
-                        TableRow medList = new TableRow(view.getContext());
-                        medList.setPadding(0, 5, 0, 5);
+                        medPrescription.add(pObj);
+
+                        final TableLayout medListTarget = view.findViewById(R.id.medicine_list);
+                        final TableRow medList = new TableRow(view.getContext());
+                        medList.setPadding(0, 10, 0, 10);
 
                         medList.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
                         medList.setWeightSum(6);
@@ -173,22 +174,49 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
                         TextView medDoseDurText = new TextView(view.getContext());
                         TextView medInstrText = new TextView(view.getContext());
 
+                        TextView space1 = new TextView(view.getContext());
+                        TextView space2 = new TextView(view.getContext());
+                        space1.setLayoutParams(new TableRow.LayoutParams(2, ViewGroup.LayoutParams.MATCH_PARENT, 0f));
+                        space1.setBackgroundColor(view.getContext().getResources().getColor(R.color.borderBlackColor));
+                        space2.setLayoutParams(new TableRow.LayoutParams(2, ViewGroup.LayoutParams.MATCH_PARENT, 0f));
+                        space2.setBackgroundColor(view.getContext().getResources().getColor(R.color.borderBlackColor));
+
                         medNameText.setText(medName);
                         medList.addView(medNameText);
                         medNameText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                         medNameText.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 3f));
+
+                        medList.addView(space1);
 
                         medDoseDurText.setText(medDoseDur);
                         medList.addView(medDoseDurText);
                         medDoseDurText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                         medDoseDurText.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
 
+                        medList.addView(space2);
+
                         medInstrText.setText(medInstr);
                         medList.addView(medInstrText);
                         medInstrText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                         medInstrText.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 2f));
 
+                        medList.setOnTouchListener(new OnSwipeListener(getActivity(), medList, medName) {
+                            public void onSwipeRight() {
+                                medListTarget.removeView(medList);
+                                medPrescription.remove(pObj);
+                                medArray.remove(medName);
+                                Log.d(TAG, "onSwipeRight: "+new Gson().toJson(medPrescription));
+                            }
+                            public void onSwipeLeft() {
+                                medListTarget.removeView(medList);
+                                medPrescription.remove(pObj);
+                                medArray.remove(medName);
+                                Log.d(TAG, "onSwipeRight: "+new Gson().toJson(medPrescription));
+                            }
+                        });
                         medListTarget.addView(medList);
+
+                        Log.d(TAG, "onClick: "+new Gson().toJson(medPrescription));
                         Log.d(TAG, "onClick: Medicine Added to List");
                     } else {
                         Snackbar snackbar = Snackbar.make(view, "The Medicine is already Added", Snackbar.LENGTH_LONG);
@@ -238,7 +266,6 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
 
     private boolean checkUserEmpty() {
         if (!ptnAvailable) {
-            String str = "";
             if (medPtnNameInput.getText().toString().trim().isEmpty()) {
                 Toast.makeText(getActivity(), "Patient Name is Empty", Toast.LENGTH_SHORT).show();
                 return false;
@@ -281,7 +308,7 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
 
     }
 
-    public void dbUpdate() {
+    private void dbUpdate() {
         //  Add values to Firebase
 
         DatabaseReference mReff = FirebaseDatabase.getInstance().getReference("Doctor").child(docUserId);
@@ -289,13 +316,6 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
 
         for (PrescriptionObject obj : medPrescription) {
             Log.d(TAG, "Loop: " + obj.medName);
-
-//            mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).child("medName").setValue(obj.medName);
-//            mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).child("medDose").setValue(obj.medDose);
-//            mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).child("medDur").setValue(obj.medDur);
-//            mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).child("medTime").setValue(obj.medName);
-//            mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).child("medFood").setValue(obj.medName);
-
 
             mReff.child("consultants").child(consultId).child("prescription").child(String.valueOf(n)).setValue(obj);
             n++;

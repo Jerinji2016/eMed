@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -23,13 +24,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PID : "
+                android:text="@string/pid"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/prescription_id"
                 android:layout_width="fill_parent"
-                android:text="Id"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
@@ -37,30 +37,59 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Date"
+            android:text="@string/date"
             android:id="@+id/prescription_date"
             android:textAlignment="textEnd"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/prescription_ptn_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:paddingHorizontal="10dp"
-        android:textSize="16dp"
-        android:paddingTop="5dp"
-        android:text="Patient Name" />
+        android:weightSum="5"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/prescription_ptn_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingBottom="5dp"
-        android:textSize="14dp"
-        android:text="Patient Details" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/prescription_ptn_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:paddingHorizontal="10dp"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+                android:text="@string/patient_name" />
+
+            <TextView
+                android:id="@+id/prescription_ptn_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingBottom="5dp"
+                android:textSize="14sp"
+                android:text="@string/patient_details" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/view_qr_btn"
+            android:layout_weight="1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="3dp"
+            android:layout_marginEnd="10dp"
+            android:tooltipText="Show QR"
+            android:onClick="showQrCode"
+            android:background="@drawable/btn_primary_default"
+            android:src="@drawable/ic_ptn_scan"
+            android:contentDescription="@string/qr_button"
+            tools:targetApi="o" />
+    </LinearLayout>
 
     <TableLayout
         android:layout_width="match_parent"
@@ -73,12 +102,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:weightSum="3">
+            android:weightSum="2">
 
             <TextView
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:paddingVertical="3dp"
-                android:text="Medicine Name"
+                android:text="@string/medicine_name"
                 android:textAlignment="center"
                 android:textStyle="bold" />
 
@@ -90,7 +119,7 @@
             <TextView
                 android:layout_weight="1"
                 android:paddingVertical="3dp"
-                android:text="Dose/Duration"
+                android:text="@string/dose_duration"
                 android:textAlignment="center"
                 android:textStyle="bold" />
         </TableRow>

@@ -62,7 +62,7 @@ public class QrCodeScanner extends AppCompatActivity implements ZXingScannerView
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
-            }
+              }
         }
         qrCodeScanner.startCamera();
         qrCodeScanner.setResultHandler(this);

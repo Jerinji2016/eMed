@@ -66,6 +66,13 @@ public class PatientHistoryFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(mListener != null)
+            mReff.addValueEventListener(mListener);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if(mListener != null)

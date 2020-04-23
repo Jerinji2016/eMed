@@ -116,6 +116,16 @@
 
     <string name="select_one">Select One</string>
     <string name="long_press_on_a_detail_to_show_qr">Long press on a detail to show QR</string>
+    <string name="qrcode_placeholder">QRCode PlaceHolder</string>
+    <string name="close">Close</string>
+
+    <string name="pid">PID :</string>
+    <string name="date">Date</string>
+    <string name="patient_name">Patient Name</string>
+    <string name="patient_details">Patient Details</string>
+    <string name="qr_button">Qr Button</string>
+    <string name="medicine_name">Medicine Name</string>
+    <string name="dose_duration">Dose/Duration</string>
     <string-array name="inADay">
         <item>OD</item>
         <item>BiD</item>

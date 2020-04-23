@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,12 +19,16 @@ import androidx.fragment.app.FragmentManager;
 
 import com.dev.emed.MainActivity;
 import com.dev.emed.R;
+import com.dev.emed.models.DocQrObject;
+import com.dev.emed.qrCode.OpenQrDialog;
+import com.dev.emed.qrCode.helper.EncryptionHelper;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.Objects;
 
@@ -149,4 +154,49 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
         super.onResume();
         reff.addValueEventListener(listener);
     }
+
+    public void showQrCode(View view) {
+        View parent = (View) view.getParent().getParent();
+        TextView idText = parent.findViewById(R.id.prescription_id);
+        String pId = idText.getText().toString();
+
+        DocQrObject qrData = new DocQrObject();
+        qrData.setConsultId(pId);
+        qrData.setDocUserId(doc_userid);
+
+        String str = new Gson().toJson(qrData);
+        String enc = EncryptionHelper.getInstance()
+                .encryptionString(str)
+                .encryptMsg();
+
+        final OpenQrDialog dialog = new OpenQrDialog();
+        Bundle data = new Bundle();
+        data.putString("enc_text", enc);
+        dialog.setArguments(data);
+
+        dialog.show(getSupportFragmentManager(), "QR Code Doctor");
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
