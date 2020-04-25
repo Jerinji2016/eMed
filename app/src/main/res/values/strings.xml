@@ -101,9 +101,9 @@
     <string name="hep_d">D</string>
     <string name="hep_e">E</string>
     <string name="tuberculosis">Tuberculosis</string>
-    <string name="tuberculosis_name">Bone, Alimentary, etc.,</string>
+    <string name="tuberculosis_name">Bone etc., (Long Press to remove)</string>
     <string name="carcinoma_cancer">Carcinoma (Cancer)</string>
-    <string name="cancer_type">Blood, Lungs, etc.,</string>
+    <string name="cancer_type">Blood etc., (Long Press to remove)</string>
     <string name="finish">Finish</string>
     <string name="add">Add</string>
     <string name="weight">Weight</string>

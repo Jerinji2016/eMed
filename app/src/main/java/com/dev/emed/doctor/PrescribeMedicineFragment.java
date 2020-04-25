@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import com.dev.emed.R;
 import com.dev.emed.models.DocQrObject;
+import com.dev.emed.models.OnSwipeListener;
 import com.dev.emed.models.PrescriptionObject;
 import com.dev.emed.qrCode.OpenQrDialog;
 import com.dev.emed.qrCode.helper.EncryptionHelper;
@@ -202,7 +203,7 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
                         medInstrText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                         medInstrText.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 2f));
 
-                        medList.setOnTouchListener(new OnSwipeListener(getActivity(), medList, medName) {
+                        medList.setOnTouchListener(new OnSwipeListener(getActivity()) {
                             public void onSwipeRight() {
                                 medListTarget.removeView(medList);
                                 medPrescription.remove(pObj);

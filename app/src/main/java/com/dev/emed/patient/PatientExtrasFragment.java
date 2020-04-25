@@ -1,5 +1,6 @@
 package com.dev.emed.patient;
 
+import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.dev.emed.R;
+import com.dev.emed.models.OnSwipeListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +35,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 public class PatientExtrasFragment extends Fragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -235,6 +239,7 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
         min = c.get(Calendar.MINUTE);
 
         fListener = new ValueEventListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -279,30 +284,49 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
                 if (dataSnapshot.child(getString(R.string.tuberculosis)).getValue() != null) {
                     ((CheckBox) view.findViewById(R.id.op9_tuberculosis)).setChecked(true);
                     view.findViewById(R.id.op9_tuberculosis_sub).setVisibility(View.VISIBLE);
-                    LinearLayout tb = view.findViewById(R.id.tuberculosis_types_container);
+                    final LinearLayout tb = view.findViewById(R.id.tuberculosis_types_container);
                     tb.removeAllViewsInLayout();
-                    for (DataSnapshot item : dataSnapshot.child(getString(R.string.tuberculosis)).getChildren()) {
-                        TextView tbType = new TextView(getContext());
+                    for (final DataSnapshot item : dataSnapshot.child(getString(R.string.tuberculosis)).getChildren()) {
+                        final TextView tbType = new TextView(getContext());
 
                         tbType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                        tbType.setPadding(0, 5, 0, 5);
                         tbType.setText((String) item.getValue());
                         tb.addView(tbType);
                         tuberculosisTypes.add((String) item.getValue());
+
+                        tbType.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                tb.removeView(tbType);
+                                tuberculosisTypes.remove(item.getValue());
+                                return true;
+                            }
+                        });
                     }
                 }
 
                 if (dataSnapshot.child(getString(R.string.carcinoma_cancer)).getValue() != null) {
                     ((CheckBox) view.findViewById(R.id.op9_carcinoma)).setChecked(true);
                     view.findViewById(R.id.op9_carcinoma_sub).setVisibility(View.VISIBLE);
-                    LinearLayout cc = view.findViewById(R.id.carcinoma_type_container);
+                    final LinearLayout cc = view.findViewById(R.id.carcinoma_type_container);
                     cc.removeAllViewsInLayout();
-                    for (DataSnapshot item : dataSnapshot.child(getString(R.string.carcinoma_cancer)).getChildren()) {
-                        TextView ccType = new TextView(getContext());
-
+                    for (final DataSnapshot item : dataSnapshot.child(getString(R.string.carcinoma_cancer)).getChildren()) {
+                        final TextView ccType = new TextView(getContext());
+                        ccType.setPadding(0, 5, 0, 5);
                         ccType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                         ccType.setText((String) item.getValue());
                         cc.addView(ccType);
                         carcinomaTypes.add((String) item.getValue());
+
+                        ccType.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                cc.removeView(ccType);
+                                carcinomaTypes.remove(item.getValue());
+                                return true;
+                            }
+                        });
                     }
                 }
 
@@ -568,16 +592,25 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
                     updatePtnDB();
                     break;
                 case R.id.add_tuberculosis_types_btn:
-                    LinearLayout tb = view.findViewById(R.id.tuberculosis_types_container);
+                    final LinearLayout tb = view.findViewById(R.id.tuberculosis_types_container);
                     EditText tbAdd = view.findViewById(R.id.tb_text);
-                    String tbAddText = tbAdd.getText().toString().trim();
+                    final String tbAddText = tbAdd.getText().toString().trim();
                     if (!tuberculosisTypes.contains(tbAddText)) {
                         //  Add Tb type to the linearout
-                        TextView tbType = new TextView(getContext());
+                        final TextView tbType = new TextView(getContext());
                         tbType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                        tbType.setPadding(0, 5, 0, 5);
                         tbType.setText(tbAddText);
                         tb.addView(tbType);
                         tuberculosisTypes.add(tbAddText);
+                        tbType.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                tb.removeView(tbType);
+                                tuberculosisTypes.remove(tbAddText);
+                                return true;
+                            }
+                        });
                     } else {
                         Snackbar snackbar = Snackbar.make(view, tbAddText + " already added", Snackbar.LENGTH_LONG);
                         snackbar.show();
@@ -585,15 +618,24 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
                     tbAdd.setText("");
                     break;
                 case R.id.add_carcinoma_types_btn:
-                    LinearLayout cc = view.findViewById(R.id.carcinoma_type_container);
+                    final LinearLayout cc = view.findViewById(R.id.carcinoma_type_container);
                     EditText ccAdd = view.findViewById(R.id.cc_text);
-                    String ccAddText = ccAdd.getText().toString().trim();
+                    final String ccAddText = ccAdd.getText().toString().trim();
                     if (!carcinomaTypes.contains(ccAddText)) {
-                        TextView ccType = new TextView(getContext());
+                        final TextView ccType = new TextView(getContext());
                         ccType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                        ccType.setPadding(0, 5, 0, 5);
                         ccType.setText(ccAddText);
                         cc.addView(ccType);
                         carcinomaTypes.add(ccAddText);
+                        ccType.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                cc.removeView(ccType);
+                                tuberculosisTypes.remove(ccAddText);
+                                return true;
+                            }
+                        });
                     } else {
                         Snackbar snackbar = Snackbar.make(view, ccAddText + " already added", Snackbar.LENGTH_LONG);
                         snackbar.show();

@@ -1,22 +1,17 @@
-package com.dev.emed.doctor;
+package com.dev.emed.models;
 
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TableRow;
 
 import static android.view.GestureDetector.SimpleOnGestureListener;
 
 public class OnSwipeListener  implements View.OnTouchListener {
 
     private final GestureDetector gestureDetector;
-    TableRow tr;
-    String name;
 
-    public OnSwipeListener(Context context, TableRow tr, String name) {
-        this.tr = tr;
-        this.name = name;
+    public OnSwipeListener(Context context) {
         gestureDetector = new GestureDetector(context, new GestureListener());
     }
 
