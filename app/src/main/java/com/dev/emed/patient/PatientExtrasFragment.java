@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.dev.emed.R;
-import com.dev.emed.models.OnSwipeListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,8 +34,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 public class PatientExtrasFragment extends Fragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -488,28 +485,7 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
             }
         };
 
-        mReff.addValueEventListener(fListener);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (fListener != null)
-            mReff.removeEventListener(fListener);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (fListener != null)
-            mReff.addValueEventListener(fListener);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (fListener != null)
-            mReff.removeEventListener(fListener);
+        mReff.addListenerForSingleValueEvent(fListener);
     }
 
     private String updateTime(int hours, int mins) {
@@ -866,6 +842,7 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
         }
 
         mReff.updateChildren(medUpdates);
+        Toast.makeText(getActivity(), "Saved Changes", Toast.LENGTH_SHORT).show();
     }
 
     private void simplyCheckBox(int checkBoxId) {
