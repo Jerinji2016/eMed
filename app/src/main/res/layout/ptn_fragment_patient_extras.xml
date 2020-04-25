@@ -116,13 +116,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="20dp"
-                        android:checkedButton="@id/type_1_diiabetes"
+                        android:checkedButton="@id/type_1_diabetes"
                         android:orientation="horizontal"
                         android:visibility="gone"
                         android:weightSum="3">
 
                         <RadioButton
-                            android:id="@+id/type_1_diiabetes"
+                            android:id="@+id/type_1_diabetes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -187,7 +187,6 @@
                         android:background="@drawable/btn_primary_default"
                         android:text="@string/next"
                         android:textColor="#FFFFFF" />
-
                 </LinearLayout>
             </LinearLayout>
 
@@ -270,7 +269,6 @@
                         android:text="@string/next"
                         android:textColor="#FFFFFF" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -497,7 +495,6 @@
                         android:text="@string/next"
                         android:textColor="#FFFFFF" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -653,52 +650,6 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/textView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/weight" />
-
-                        <EditText
-                            android:id="@+id/ptn_weight"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="@string/no_change"
-                            android:inputType="text"
-                            tools:ignore="TextFields" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/height" />
-
-                        <EditText
-                            android:id="@+id/ptn_height"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="@string/no_change"
-                            android:inputType="text"
-                            tools:ignore="TextFields" />
-                    </LinearLayout>
-
                     <CheckBox
                         android:id="@+id/op9_hiv"
                         android:layout_width="match_parent"
@@ -763,10 +714,11 @@
                         android:layout_height="wrap_content"
                         android:text="@string/tuberculosis" />
 
-                    <TextView
+                    <LinearLayout
                         android:id="@+id/tuberculosis_types_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="50dp"
                         android:orientation="vertical" />
 
                     <LinearLayout
@@ -802,10 +754,11 @@
                         android:layout_height="wrap_content"
                         android:text="@string/carcinoma_cancer" />
 
-                    <TextView
+                    <LinearLayout
                         android:id="@+id/carcinoma_type_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="50dp"
                         android:orientation="vertical" />
 
                     <LinearLayout
@@ -835,13 +788,160 @@
                             android:textColor="#FFFFFF" />
                     </LinearLayout>
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="100dp"
+                        android:background="@drawable/btn_primary_default" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/weight"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/ptn_weight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/no_change"
+                            android:inputType="numberDecimal"
+                            tools:ignore="TextFields" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/height"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/ptn_height"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/no_change"
+                            android:inputType="numberDecimal"
+                            tools:ignore="TextFields" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginVertical="8dp"
+                        android:layout_marginEnd="100dp"
+                        android:background="@drawable/btn_primary_default" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="5dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/breakfast_time"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/breakfast_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/click_to_edit"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="5dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/lunch_time"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/lunch_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/click_to_edit"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="10dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/dinner_time"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/dinner_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/click_to_edit"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="@string/reminders_info_text"
+                        android:textAlignment="center"
+                        android:textStyle="italic" />
+
                     <Button
                         android:id="@+id/op9_next_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/btn_primary_default"
                         android:text="@string/finish"
-                        android:textColor="#FFFFFF" />
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

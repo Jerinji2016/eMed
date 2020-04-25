@@ -126,6 +126,11 @@
     <string name="qr_button">Qr Button</string>
     <string name="medicine_name">Medicine Name</string>
     <string name="dose_duration">Dose/Duration</string>
+    <string name="click_to_edit">Click to edit</string>
+    <string name="breakfast_time">Breakfast Time</string>
+    <string name="lunch_time">Lunch Time</string>
+    <string name="dinner_time">Dinner Time</string>
+    <string name="reminders_info_text">Reminders set wil be 30 mins prior to these \ntime for medicines before Food</string>
     <string-array name="inADay">
         <item>OD</item>
         <item>BiD</item>

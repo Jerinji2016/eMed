@@ -58,11 +58,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
                 userType = userTypeSwitch.isChecked() ? "Doctor" : "Patient";
-                if(userTypeSwitch.isChecked()) {
+                if (userTypeSwitch.isChecked()) {
                     userType = "Doctor";
                     i = new Intent(MainActivity.this, DoctorActivity.class);
-                }
-                else {
+                } else {
                     userType = "Patient";
                     i = new Intent(MainActivity.this, PatientActivity.class);
                 }
@@ -71,40 +70,37 @@ public class MainActivity extends AppCompatActivity {
                 pass = password.getText().toString().trim();
 
 
-                if(!userid.isEmpty() && !pass.isEmpty()){
+                if (!userid.isEmpty() && !pass.isEmpty()) {
                     reff = FirebaseDatabase.getInstance().getReference(userType);
                     valListenter = new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.child(userid).getValue() != null) {
+                            if (dataSnapshot.child(userid).getValue() != null) {
                                 Log.d("Pass", dataSnapshot.child(userid).child("password").getValue().toString());
 
                                 String generated_hash = "";
                                 try {
                                     MessageDigest md = MessageDigest.getInstance("MD5");
                                     md.update(pass.getBytes());
-                                    byte [] bytes = md.digest();
+                                    byte[] bytes = md.digest();
                                     StringBuilder sb = new StringBuilder();
                                     for (byte aByte : bytes)
                                         sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
                                     generated_hash = sb.toString();
-                                }
-                                catch (NoSuchAlgorithmException e) {
+                                } catch (NoSuchAlgorithmException e) {
                                     e.printStackTrace();
                                 }
 
-                                if(Objects.equals(dataSnapshot.child(userid).child("password").getValue(), generated_hash)) {
+                                if (Objects.equals(dataSnapshot.child(userid).child("password").getValue(), generated_hash)) {
                                     i.putExtra("userId", userid);
                                     startActivity(i);
-                                }
-                                else {
+                                } else {
                                     Snackbar snackbar = Snackbar.make(findViewById(R.id.main_login_activity), "Invalid Username/Password", Snackbar.LENGTH_LONG);
-                                        snackbar.show();
-                                }
-                            }
-                            else {
-                                Snackbar snackbar = Snackbar.make(findViewById(R.id.main_login_activity), "Invalid Username/Password", Snackbar.LENGTH_LONG);
                                     snackbar.show();
+                                }
+                            } else {
+                                Snackbar snackbar = Snackbar.make(findViewById(R.id.main_login_activity), "Invalid Username/Password", Snackbar.LENGTH_LONG);
+                                snackbar.show();
                             }
                         }
 
@@ -115,10 +111,9 @@ public class MainActivity extends AppCompatActivity {
                     };
 
                     reff.addValueEventListener(valListenter);
-                }
-                else {
+                } else {
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.main_login_activity), "Please dont leave the fields Empty", Snackbar.LENGTH_LONG);
-                        snackbar.show();
+                    snackbar.show();
                 }
             }
         });
@@ -134,20 +129,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finishActivity(0);
+        this.finish();
     }
+
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: Activity Paused");
-        reff.removeEventListener(valListenter);
+        if (valListenter != null)
+            reff.removeEventListener(valListenter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: Activity Destroyed");
-        reff.removeEventListener(valListenter);
+        if (valListenter != null)
+            reff.removeEventListener(valListenter);
     }
 }

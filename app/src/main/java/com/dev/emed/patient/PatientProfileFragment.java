@@ -1,6 +1,7 @@
 package com.dev.emed.patient;
 
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -126,7 +127,47 @@ public class PatientProfileFragment extends Fragment {
 
                 ptnUserWeight.setText((String) ptnUser.child("physic").child("weight").getValue());
                 ptnUserHeight.setText((String) ptnUser.child("physic").child("height").getValue());
-                ptnUserMedConditions.setText((String) ptnUser.child("medicalConditions").getValue());
+
+
+                //  Fetch from medicalConditions
+                DataSnapshot med = ptnUser.child("medicalConditions");
+                StringBuilder condition = new StringBuilder();
+
+                String prefix = "";
+                if (med.child("textTyped").getValue() != null) {
+                    for (DataSnapshot item : med.child("textTyped").getChildren()) {
+                        if (((String) item.getValue()).contains("-")) {
+                            String[] arr = ((String) item.getValue()).split("-");
+                            condition.append(prefix).append(arr[0]).append("\n\t\t*\t").append(arr[1]);
+                        } else {
+                            condition.append(prefix).append(item.getValue());
+                        }
+                        prefix = "\n";
+                    }
+                }
+
+                if (med.child(getString(R.string.carcinoma_cancer)).getValue() != null) {
+                    condition.append(prefix).append("Carcinoma (Cancer) :");
+                    for (DataSnapshot item : med.child(getString(R.string.carcinoma_cancer)).getChildren()) {
+                        condition.append(prefix).append("\t\t - ").append(item.getValue());
+                        prefix = "\n";
+                    }
+                }
+
+                if (med.child(getString(R.string.tuberculosis)).getValue() != null) {
+                    condition.append(prefix).append("Tuberculosis :");
+                    for (DataSnapshot item : med.child(getString(R.string.tuberculosis)).getChildren()) {
+                        condition.append(prefix).append("\t\t - ").append(item.getValue());
+                        prefix = "\n";
+                    }
+                }
+
+                if (condition.length() > 0)
+                    ptnUserMedConditions.setText(condition.toString());
+                else {
+                    ptnUserMedConditions.setText("No Medical Conditions");
+                    ptnUserMedConditions.setTypeface(ptnUserMedConditions.getTypeface(), Typeface.BOLD_ITALIC);
+                }
 
                 if (ptnUser.child("lastConsultedDoc").getValue() != null)
                     ptnUserLastDoc.setText((String) ptnUser.child("lastConsultedDoc").getValue());
@@ -159,12 +200,21 @@ public class PatientProfileFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mReff.removeEventListener(listener);
+        if (listener != null)
+            mReff.removeEventListener(listener);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (listener != null)
+            mReff.addValueEventListener(listener);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mReff.removeEventListener(listener);
+        if (listener != null)
+            mReff.removeEventListener(listener);
     }
 }
