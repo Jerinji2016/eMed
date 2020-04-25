@@ -131,6 +131,9 @@
     <string name="lunch_time">Lunch Time</string>
     <string name="dinner_time">Dinner Time</string>
     <string name="reminders_info_text">Reminders set wil be 30 mins prior to these \ntime for medicines before Food</string>
+    <string name="set_reminder_for_this_prescription">Set Reminder for this Prescription</string>
+    <string name="instructions">Instructions</string>
+
     <string-array name="inADay">
         <item>OD</item>
         <item>BiD</item>

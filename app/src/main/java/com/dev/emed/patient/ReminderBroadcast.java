@@ -12,6 +12,8 @@ import com.dev.emed.R;
 public class ReminderBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        int id = Integer.parseInt(intent.getStringExtra("id"));
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(context, "notifyMedicine")
                 .setSmallIcon(R.drawable.ic_menu_prescription)
                 .setContentTitle("Time to have your Medicine")
@@ -20,6 +22,6 @@ public class ReminderBroadcast extends BroadcastReceiver {
 
         NotificationManagerCompat nManager = NotificationManagerCompat.from(context);
 
-        nManager.notify(200, nBuilder.build());
+        nManager.notify(id, nBuilder.build());
     }
 }

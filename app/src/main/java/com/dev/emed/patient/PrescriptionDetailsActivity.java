@@ -1,8 +1,10 @@
 package com.dev.emed.patient;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -22,6 +26,7 @@ import com.dev.emed.R;
 import com.dev.emed.models.DocQrObject;
 import com.dev.emed.models.PatientMedUpdateObject;
 import com.dev.emed.models.PrescriptionObject;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +48,13 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
     final ArrayList<String> medList = new ArrayList<>();
 
     DatabaseReference docReff, ptnReff;
+
+    AlarmManager alarmManager;
+
+    DataSnapshot reminderTime;
+
+    ArrayList<PrescriptionObject> medObj = new ArrayList<>();
+    ArrayList<PendingIntent> intentList;
     long n;
     ValueEventListener docValueEventListener, ptnValueEventListener;
 
@@ -60,6 +72,8 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
 
         docId = userObj.getDocUserId();
         prescriptionId = userObj.getConsultId();
+
+        createNotificationChannel();
 
         final TextView pId = findViewById(R.id.doc_prescription_ptn_id);
         final TextView pName = findViewById(R.id.doc_prescription_ptn_name);
@@ -117,6 +131,8 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                             (String) item.child("medTime").getValue(),
                             (String) item.child("medFood").getValue());
 
+                    medObj.add(pObj);
+
                     pMedName.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 3f));
                     pMedName.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                     pMedName.setPadding(0, 10, 0, 10);
@@ -128,7 +144,7 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
 
                     pMedDose.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                     pMedDose.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                    pMedDose.setText(pObj.medDose + "\n" + ((pObj.medDur.equals("0")) ? "everyday" : pObj.medDur+" days"));
+                    pMedDose.setText(pObj.medDose + "\n" + ((pObj.medDur.equals("0")) ? "everyday" : pObj.medDur + " days"));
                     pMedDose.setPadding(0, 10, 0, 10);
                     tr.addView(pMedDose);
                     tr.addView(space2);
@@ -155,6 +171,9 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                 ptnReff.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        reminderTime = dataSnapshot.child("foodTimings");
+
                         n = dataSnapshot.child("medHistory").getChildrenCount();
                         Log.d(TAG, "onDataChange: " + dataSnapshot.getValue() + "\n" + dataSnapshot.child("medHistory").getChildrenCount());
 
@@ -162,7 +181,6 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                         ptnReff.child("currentMed").setValue(medList);
                         ptnReff = ptnReff.child("medHistory");
                         ptnReff.child(Long.toString(n)).setValue(ptnMed);
-
 
                         Toast.makeText(getApplicationContext(), "Medicines Added to Ptn DB", Toast.LENGTH_SHORT).show();
                     }
@@ -181,9 +199,86 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
         };
 
         docReff.addValueEventListener(docValueEventListener);
+
+        Switch setReminderBtn = findViewById(R.id.prescription_reminder_switch);
+        setReminderBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    /*
+                     * Notification Set Up
+                     * */
+
+
+                    if (reminderTime.getValue() != null) {
+
+                        Log.d(TAG, "onDataChange: " + medObj);
+                        Log.d(TAG, "onDataChange: " + reminderTime.getValue());
+
+                        intentList = new ArrayList<>();
+
+                        ArrayList<Integer> remList = new ArrayList<>();
+
+                        int i = 0;
+                        for (PrescriptionObject item : medObj) {
+                            for (int it = 0; it < Integer.parseInt(item.medDur); it++) {
+                                int hr = Integer.parseInt((String) reminderTime.child("breakfast").child("hour").getValue());
+                                int min = Integer.parseInt((String) reminderTime.child("breakfast").child("min").getValue());
+
+                                int n = (item.medTime.equals("OD")) ? 1 :
+                                            (item.medTime.equals("BiD")) ? 2 :
+                                                (item.medTime.equals("TiD")) ? 3 : 4;
+
+                            }
+                            Intent nIntent = new Intent(getApplicationContext(), ReminderBroadcast.class);
+                            nIntent.putExtra("id", "" + i);
+                            PendingIntent nPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), i, nIntent, PendingIntent.FLAG_ONE_SHOT);
+
+                            intentList.add(nPendingIntent);
+
+                            alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                            long currentTime = System.currentTimeMillis();
+                            Log.d(TAG, "onCheckedChanged: " + currentTime);
+                            long tenSeconds = 1000 * (5 + (i * 5));
+                            i++;
+
+                            alarmManager.set(AlarmManager.RTC_WAKEUP,
+                                    currentTime + tenSeconds,
+                                    nPendingIntent);
+                            Log.d(TAG, "onCheckedChanged: " + (i + 1) + " Alarm Set");
+                        }
+                        Toast.makeText(PrescriptionDetailsActivity.this, i + " Reminders Set", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.prescription_details_layout), "Reminder was not set since your Food Timing are incomplete", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+                } else {
+                    if (!intentList.isEmpty())
+                        for (PendingIntent item : intentList)
+                            alarmManager.cancel(item);
+
+                    Toast.makeText(PrescriptionDetailsActivity.this, "Reminder Removed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
+    NotificationManager notificationManager;
 
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "eMedNotificationChannel";
+            String description = "Channel for eMed Notification";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel channel = new NotificationChannel("notifyMedicine", name, importance);
+            channel.setDescription(description);
+
+            notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel((channel));
+        }
+    }
 
     @Override
     protected void onDestroy() {
