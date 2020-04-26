@@ -38,8 +38,7 @@ public class PatientActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent i = new Intent(PatientActivity.this, QrCodeScanner.class);
-                Intent i = new Intent(PatientActivity.this, PrescriptionDetailsActivity.class);
+                Intent i = new Intent(PatientActivity.this, QrCodeScanner.class);
                 i.putExtra("userType", "Patient");
                 i.putExtra("userId", ptn_userid);
                 startActivity(i);

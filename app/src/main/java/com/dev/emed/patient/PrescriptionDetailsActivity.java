@@ -2,12 +2,7 @@ package com.dev.emed.patient;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dev.emed.R;
+import com.dev.emed.models.DocQrObject;
 import com.dev.emed.models.MedicineReminder;
 import com.dev.emed.models.PatientMedUpdateObject;
 import com.dev.emed.models.PrescriptionObject;
@@ -33,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,9 +46,7 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
 
     DatabaseReference docReff, ptnReff;
 
-    AlarmManager alarmManager;
     DataSnapshot reminderTime;
-
     MedicineReminder medicineReminder;
     ArrayList<PrescriptionObject> medObj = new ArrayList<>();
 
@@ -65,17 +60,13 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
 
         Intent i = getIntent();
 
-//        String decryptedString = i.getStringExtra("dcy_text");
+        String decryptedString = i.getStringExtra("dcy_text");
         userId = i.getStringExtra("userId");
-//        DocQrObject userObj = new Gson()
-//                .fromJson(decryptedString, DocQrObject.class);
+        DocQrObject userObj = new Gson()
+                .fromJson(decryptedString, DocQrObject.class);
 
-//        docId = userObj.getDocUserId();
-//        prescriptionId = userObj.getConsultId();
-
-        docId = "subinannan";
-        prescriptionId = "e1or6IKiF8kDRqnW";
-
+        docId = userObj.getDocUserId();
+        prescriptionId = userObj.getConsultId();
 
         final TextView pId = findViewById(R.id.doc_prescription_ptn_id);
         final TextView pName = findViewById(R.id.doc_prescription_ptn_name);
