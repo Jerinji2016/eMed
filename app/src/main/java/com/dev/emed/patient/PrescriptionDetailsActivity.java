@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dev.emed.R;
-import com.dev.emed.models.DocQrObject;
+import com.dev.emed.models.MedicineReminder;
 import com.dev.emed.models.PatientMedUpdateObject;
 import com.dev.emed.models.PrescriptionObject;
 import com.google.android.material.snackbar.Snackbar;
@@ -32,7 +33,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,11 +50,11 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
     DatabaseReference docReff, ptnReff;
 
     AlarmManager alarmManager;
-
     DataSnapshot reminderTime;
 
+    MedicineReminder medicineReminder;
     ArrayList<PrescriptionObject> medObj = new ArrayList<>();
-    ArrayList<PendingIntent> intentList;
+
     long n;
     ValueEventListener docValueEventListener, ptnValueEventListener;
 
@@ -64,16 +64,18 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_prescription_details);
 
         Intent i = getIntent();
-        String decryptedString = i.getStringExtra("dcy_text");
+
+//        String decryptedString = i.getStringExtra("dcy_text");
         userId = i.getStringExtra("userId");
+//        DocQrObject userObj = new Gson()
+//                .fromJson(decryptedString, DocQrObject.class);
 
-        DocQrObject userObj = new Gson()
-                .fromJson(decryptedString, DocQrObject.class);
+//        docId = userObj.getDocUserId();
+//        prescriptionId = userObj.getConsultId();
 
-        docId = userObj.getDocUserId();
-        prescriptionId = userObj.getConsultId();
+        docId = "subinannan";
+        prescriptionId = "e1or6IKiF8kDRqnW";
 
-        createNotificationChannel();
 
         final TextView pId = findViewById(R.id.doc_prescription_ptn_id);
         final TextView pName = findViewById(R.id.doc_prescription_ptn_name);
@@ -98,7 +100,7 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "\nonDataChange: User " + dataSnapshot.child("name"));
                 docName = (String) dataSnapshot.child("name").getValue();
-                Log.d(TAG, "onDataChange: " + docName + " or " + (String) dataSnapshot.child("name").getValue());
+                Log.d(TAG, "onDataChange: " + docName + " or " + dataSnapshot.child("name").getValue());
                 pDocName.setText(docName + "\n" + docId);
 
                 dataSnapshot = dataSnapshot.child("consultants").child(prescriptionId);
@@ -175,12 +177,11 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                         reminderTime = dataSnapshot.child("foodTimings");
 
                         n = dataSnapshot.child("medHistory").getChildrenCount();
-                        Log.d(TAG, "onDataChange: " + dataSnapshot.getValue() + "\n" + dataSnapshot.child("medHistory").getChildrenCount());
 
-                        ptnReff.child("lastConsultedDoc").setValue(docName);
-                        ptnReff.child("currentMed").setValue(medList);
-                        ptnReff = ptnReff.child("medHistory");
-                        ptnReff.child(Long.toString(n)).setValue(ptnMed);
+//                        ptnReff.child("lastConsultedDoc").setValue(docName);
+//                        ptnReff.child("currentMed").setValue(medList);
+//                        ptnReff = ptnReff.child("medHistory");
+//                        ptnReff.child(Long.toString(n)).setValue(ptnMed);
 
                         Toast.makeText(getApplicationContext(), "Medicines Added to Ptn DB", Toast.LENGTH_SHORT).show();
                     }
@@ -205,79 +206,24 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    /*
-                     * Notification Set Up
-                     * */
-
 
                     if (reminderTime.getValue() != null) {
 
-                        Log.d(TAG, "onDataChange: " + medObj);
-                        Log.d(TAG, "onDataChange: " + reminderTime.getValue());
-
-                        intentList = new ArrayList<>();
-
-                        ArrayList<Integer> remList = new ArrayList<>();
-
-                        int i = 0;
-                        for (PrescriptionObject item : medObj) {
-                            for (int it = 0; it < Integer.parseInt(item.medDur); it++) {
-                                int hr = Integer.parseInt((String) reminderTime.child("breakfast").child("hour").getValue());
-                                int min = Integer.parseInt((String) reminderTime.child("breakfast").child("min").getValue());
-
-                                int n = (item.medTime.equals("OD")) ? 1 :
-                                            (item.medTime.equals("BiD")) ? 2 :
-                                                (item.medTime.equals("TiD")) ? 3 : 4;
-
-                            }
-                            Intent nIntent = new Intent(getApplicationContext(), ReminderBroadcast.class);
-                            nIntent.putExtra("id", "" + i);
-                            PendingIntent nPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), i, nIntent, PendingIntent.FLAG_ONE_SHOT);
-
-                            intentList.add(nPendingIntent);
-
-                            alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-                            long currentTime = System.currentTimeMillis();
-                            Log.d(TAG, "onCheckedChanged: " + currentTime);
-                            long tenSeconds = 1000 * (5 + (i * 5));
-                            i++;
-
-                            alarmManager.set(AlarmManager.RTC_WAKEUP,
-                                    currentTime + tenSeconds,
-                                    nPendingIntent);
-                            Log.d(TAG, "onCheckedChanged: " + (i + 1) + " Alarm Set");
-                        }
-                        Toast.makeText(PrescriptionDetailsActivity.this, i + " Reminders Set", Toast.LENGTH_SHORT).show();
+                        medicineReminder = new MedicineReminder(medObj, reminderTime, getApplicationContext(), findViewById(R.id.prescription_details_layout));
+                        medicineReminder.setReminder();
                     } else {
-                        Snackbar snackbar = Snackbar.make(findViewById(R.id.prescription_details_layout), "Reminder was not set since your Food Timing are incomplete", Snackbar.LENGTH_LONG);
+                        Snackbar snackbar = Snackbar.make(
+                                findViewById(R.id.prescription_details_layout),
+                                "Reminder was not set since your Food Timing are incomplete",
+                                Snackbar.LENGTH_LONG);
                         snackbar.show();
                     }
                 } else {
-                    if (!intentList.isEmpty())
-                        for (PendingIntent item : intentList)
-                            alarmManager.cancel(item);
-
+                    medicineReminder.removeReminder();
                     Toast.makeText(PrescriptionDetailsActivity.this, "Reminder Removed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    NotificationManager notificationManager;
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "eMedNotificationChannel";
-            String description = "Channel for eMed Notification";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-
-            NotificationChannel channel = new NotificationChannel("notifyMedicine", name, importance);
-            channel.setDescription(description);
-
-            notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel((channel));
-        }
     }
 
     @Override

@@ -13,11 +13,14 @@ public class ReminderBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        int id = Integer.parseInt(intent.getStringExtra("id"));
+        String nId = intent.getStringExtra("id");
+        int id = Integer.parseInt(nId);
+        String message = intent.getStringExtra("message");
+
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(context, "notifyMedicine")
                 .setSmallIcon(R.drawable.ic_menu_prescription)
-                .setContentTitle("Time to have your Medicine")
-                .setContentText("Have 1 glass of water now or you die")
+                .setContentTitle("Medicine Time : "+intent.getStringExtra("date"))
+                .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_MAX);
 
         NotificationManagerCompat nManager = NotificationManagerCompat.from(context);

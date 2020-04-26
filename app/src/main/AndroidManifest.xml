@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.hardware.camera" />
     <uses-permission android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.REQUEST_COMPANION_RUN_IN_BACKGROUND" />
+    <uses-permission android:name="android.permission.REQUEST_COMPANION_USE_DATA_IN_BACKGROUND" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +20,9 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".doctor.PrescribeMedicineActivity" />
         <activity android:name=".patient.PrescriptionDetailsActivity" />
-        <activity android:name=".doctor.PatientDetailsActivity" />
+        <activity android:name=".doctor.PatientDetailsActivity" >
+
+        </activity>
         <activity android:name=".qrCode.QrCodeScanner" />
         <activity
             android:name=".patient.PatientActivity"
