@@ -26,13 +26,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private static int SPLASH_TIME_OUT = 3000;
 
     private static final String TAG = "MainActivity";
     EditText username;
@@ -53,21 +54,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-//                startActivity(homeIntent);
-//                finish();
-//            }
-//        }, SPLASH_TIME_OUT);
-
         username = findViewById(R.id.login_username);
         password = findViewById(R.id.login_password);
         userTypeSwitch = findViewById(R.id.ptn_doc_switch);
 
         Button login_redirect = findViewById(R.id.login);
         Button signup_redirect = findViewById(R.id.sign_up);
+
+
+        ArrayList<String> arr = new ArrayList<>();
+        arr.add("apple");
+        arr.add("banana");
+        arr.add("orange");
 
         final CheckBox rememberCheck = findViewById(R.id.remember_login_chip);
 

@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import static android.content.Context.ALARM_SERVICE;
+import static android.content.Context.MODE_PRIVATE;
 
 public class MedicineReminder extends ReminderBroadcast {
     private static final String TAG = "MedicineReminder";

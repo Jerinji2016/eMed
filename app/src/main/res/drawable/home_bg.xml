@@ -3,6 +3,7 @@
 
     <gradient
         android:startColor="#AA2020"
-        android:angle="180"
+        android:type="radial"
+        android:gradientRadius="400dp"
         android:endColor="#320101" />
 </shape>

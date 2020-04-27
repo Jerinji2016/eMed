@@ -3,6 +3,7 @@ package com.dev.emed.patient;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -196,12 +197,26 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
         setReminderBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                SharedPreferences preferences = getSharedPreferences("medIdList", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+
                 if (isChecked) {
-
                     if (reminderTime.getValue() != null) {
-
                         medicineReminder = new MedicineReminder(medObj, reminderTime, getApplicationContext(), findViewById(R.id.prescription_details_layout));
                         medicineReminder.setReminder();
+
+                        //  Add Reminder to SharedPreferences
+                        editor.putBoolean("hasReminder", true);
+                        String string = preferences.getString("medList", "");
+
+                        String newString = "";
+                        ArrayList mList;
+                        mList = new Gson().fromJson(string, ArrayList.class);
+
+                        mList.add(prescriptionId);
+                        editor.putString("medList", new Gson().toJson(mList));
+                        editor.apply();
                     } else {
                         Snackbar snackbar = Snackbar.make(
                                 findViewById(R.id.prescription_details_layout),
@@ -212,6 +227,18 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
                 } else {
                     medicineReminder.removeReminder();
                     Toast.makeText(PrescriptionDetailsActivity.this, "Reminder Removed", Toast.LENGTH_SHORT).show();
+
+                    String string = preferences.getString("medList", "");
+                    String newString = "";
+                    ArrayList mList;
+                    mList = new Gson().fromJson(string, ArrayList.class);
+
+                    if(mList.contains(prescriptionId))
+                        mList.remove(prescriptionId);
+                    editor.putString("medList", new Gson().toJson(mList));
+                    if(mList.isEmpty())
+                        editor.putBoolean("hasReminder", true);
+                    editor.apply();
                 }
             }
         });

@@ -71,7 +71,7 @@ public class DoctorProfileFragment extends Fragment {
                 fragment.setArguments(data);
 
                 fm.beginTransaction().replace(R.id.doc_fragment_container, fragment).commit();
-                ((DoctorActivity)getActivity()).navigationView.setCheckedItem(R.id.doc_ptn_history);
+                ((DoctorActivity) getActivity()).navigationView.setCheckedItem(R.id.doc_ptn_history);
             }
         });
 
