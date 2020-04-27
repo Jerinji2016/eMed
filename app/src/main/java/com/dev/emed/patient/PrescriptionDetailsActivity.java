@@ -169,10 +169,10 @@ public class PrescriptionDetailsActivity extends AppCompatActivity {
 
                         n = dataSnapshot.child("medHistory").getChildrenCount();
 
-//                        ptnReff.child("lastConsultedDoc").setValue(docName);
-//                        ptnReff.child("currentMed").setValue(medList);
-//                        ptnReff = ptnReff.child("medHistory");
-//                        ptnReff.child(Long.toString(n)).setValue(ptnMed);
+                        ptnReff.child("lastConsultedDoc").setValue(docName);
+                        ptnReff.child("currentMed").setValue(medList);
+                        ptnReff = ptnReff.child("medHistory");
+                        ptnReff.child(Long.toString(n)).setValue(ptnMed);
 
                         Toast.makeText(getApplicationContext(), "Medicines Added to Ptn DB", Toast.LENGTH_SHORT).show();
                     }
