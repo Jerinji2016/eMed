@@ -1,6 +1,8 @@
 package com.dev.emed.patient;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.dev.emed.MainActivity;
 import com.dev.emed.R;
 import com.dev.emed.models.PatientDetailObject;
 import com.dev.emed.qrCode.OpenQrDialog;
@@ -27,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class PatientProfileFragment extends Fragment {
 
@@ -79,7 +84,15 @@ public class PatientProfileFragment extends Fragment {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                SharedPreferences preferences = getActivity().getSharedPreferences("rememberLogin", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("rememberMe", false);
+                editor.apply();
                 getActivity().finish();
+
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -1,6 +1,7 @@
 package com.dev.emed.doctor;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
+import static android.content.Context.MODE_PRIVATE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class DoctorProfileFragment extends Fragment {
@@ -86,6 +88,14 @@ public class DoctorProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
+
+                SharedPreferences preferences = getActivity().getSharedPreferences("rememberLogin", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("rememberMe", false);
+                editor.apply();
+
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
             }
         });
 

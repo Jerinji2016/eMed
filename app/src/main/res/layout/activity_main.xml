@@ -141,11 +141,11 @@
 
     </LinearLayout>
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip2"
+    <CheckBox
+        android:id="@+id/remember_login_chip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remember Login"
+        android:text="@string/remember_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

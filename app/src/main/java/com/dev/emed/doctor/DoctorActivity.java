@@ -1,6 +1,7 @@
 package com.dev.emed.doctor;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -54,7 +55,6 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
         Log.d(TAG, "onCreate: Create Doc Activity");
 
         drawer = findViewById(R.id.doctor_dashboard_layout);
-
         navigationView = findViewById(R.id.doc_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -79,7 +79,7 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
             }
         };
 
-        reff.addValueEventListener(listener);
+        reff.addListenerForSingleValueEvent(listener);
 
         Log.d(TAG, "onCreate: Added Value Event Listener for Nav Head");
 
@@ -104,7 +104,19 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            MenuItem item = navigationView.getCheckedItem();
+            int id = item.getItemId();
+            if(id == R.id.doc_profile)
+                finish();
+            else {
+                FragmentManager fm = getSupportFragmentManager();
+                Fragment fragment = new DoctorProfileFragment();
+                Bundle data = new Bundle();
+                data.putString("userId", doc_userid);
+                fragment.setArguments(data);
+                fm.beginTransaction().replace(R.id.doc_fragment_container, fragment).commit();
+                navigationView.setCheckedItem(R.id.doc_profile);
+            }
         }
     }
 
@@ -131,8 +143,7 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
                 fragment = new PatientHistoryFragment();
                 break;
             case R.id.doc_logout:
-                Intent i = new Intent(this, MainActivity.class);
-                startActivity(i);
+                finishActivity();
                 break;
         }
         fragment.setArguments(data);
@@ -140,18 +151,6 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        reff.removeEventListener(listener);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        reff.addValueEventListener(listener);
     }
 
     public void showQrCode(View view) {
@@ -174,6 +173,17 @@ public class DoctorActivity extends AppCompatActivity implements NavigationView.
         dialog.setArguments(data);
 
         dialog.show(getSupportFragmentManager(), "QR Code Doctor");
+    }
+
+    public void finishActivity() {
+        SharedPreferences preferences = getSharedPreferences("rememberLogin", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("rememberMe", false);
+        editor.apply();
+
+        finish();
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 }
 

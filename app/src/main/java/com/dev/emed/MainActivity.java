@@ -1,10 +1,15 @@
 package com.dev.emed;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.util.SparseLongArray;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -27,6 +32,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    private static int SPLASH_TIME_OUT = 3000;
 
     private static final String TAG = "MainActivity";
     EditText username;
@@ -37,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     String userid;
     String pass;
+    boolean rememberMe = false;
 
     DatabaseReference reff;
     ValueEventListener valListenter;
@@ -46,6 +53,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+//                startActivity(homeIntent);
+//                finish();
+//            }
+//        }, SPLASH_TIME_OUT);
+
         username = findViewById(R.id.login_username);
         password = findViewById(R.id.login_password);
         userTypeSwitch = findViewById(R.id.ptn_doc_switch);
@@ -53,11 +69,19 @@ public class MainActivity extends AppCompatActivity {
         Button login_redirect = findViewById(R.id.login);
         Button signup_redirect = findViewById(R.id.sign_up);
 
+        final CheckBox rememberCheck = findViewById(R.id.remember_login_chip);
+
+        rememberCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                rememberMe = isChecked;
+            }
+        });
+
         login_redirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
-                userType = userTypeSwitch.isChecked() ? "Doctor" : "Patient";
                 if (userTypeSwitch.isChecked()) {
                     userType = "Doctor";
                     i = new Intent(MainActivity.this, DoctorActivity.class);
@@ -92,6 +116,26 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
                                 if (Objects.equals(dataSnapshot.child(userid).child("password").getValue(), generated_hash)) {
+                                    //  Logging In
+
+                                    if (rememberMe) {
+                                        SharedPreferences preferences = getSharedPreferences("rememberLogin", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.putString("userId", userid);
+                                        editor.putString("password", generated_hash);
+                                        editor.putString("userType", userType);
+                                        editor.putBoolean("rememberMe", true);
+                                        editor.apply();
+
+                                        Log.d(TAG, "onDataChange: Remembered Login");
+                                    } else {
+                                        SharedPreferences preferences = getSharedPreferences("rememberLogin", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.putString("userId", userid);
+                                        editor.putBoolean("rememberMe", false);
+                                        editor.apply();
+                                    }
+
                                     i.putExtra("userId", userid);
                                     startActivity(i);
                                 } else {
@@ -110,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     };
 
-                    reff.addValueEventListener(valListenter);
+                    reff.addListenerForSingleValueEvent(valListenter);
                 } else {
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.main_login_activity), "Please dont leave the fields Empty", Snackbar.LENGTH_LONG);
                     snackbar.show();
@@ -132,20 +176,10 @@ public class MainActivity extends AppCompatActivity {
         this.finish();
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
+        finish();
         Log.d(TAG, "onPause: Activity Paused");
-        if (valListenter != null)
-            reff.removeEventListener(valListenter);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: Activity Destroyed");
-        if (valListenter != null)
-            reff.removeEventListener(valListenter);
     }
 }
