@@ -16,6 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:cropToPadding="true"
+        android:backgroundTint="#fff"
+        android:backgroundTintMode="multiply"
         app:srcCompat="@mipmap/ic_launcher_foreground"
         android:contentDescription="@string/emed_logo" />
 

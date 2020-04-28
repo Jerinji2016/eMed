@@ -62,11 +62,6 @@ public class MainActivity extends AppCompatActivity {
         Button signup_redirect = findViewById(R.id.sign_up);
 
 
-        ArrayList<String> arr = new ArrayList<>();
-        arr.add("apple");
-        arr.add("banana");
-        arr.add("orange");
-
         final CheckBox rememberCheck = findViewById(R.id.remember_login_chip);
 
         rememberCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

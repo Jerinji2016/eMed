@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void run() {
                 SharedPreferences checkPref = getSharedPreferences("rememberLogin", MODE_PRIVATE);
-                if (checkPref.getBoolean("rememberMe", true)) {
+                if (checkPref.getBoolean("rememberMe", false)) {
 
                     final String id = checkPref.getString("userId", ""),
                             pass = checkPref.getString("password", ""),
