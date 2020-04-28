@@ -51,6 +51,7 @@
         <ImageView
             android:layout_width="106dp"
             android:layout_height="115dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="40dp"
             app:srcCompat="@drawable/ic_doc_img" />
 
@@ -63,26 +64,22 @@
             <TextView
                 android:id="@+id/doc_name_text"
                 style="@style/doc_profile_text"
-                android:layout_width="175dp"
-                android:layout_height="35dp"
-                android:text="Doc Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textSize="22sp"
-                android:textStyle="bold"
-                tools:ignore="MissingConstraints" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/doc_specialisation_text"
                 style="@style/doc_profile_text"
-                android:layout_width="175dp"
-                android:layout_height="34dp"
-                android:text="Doc Specialisation" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/doc_reff_id_text"
                 style="@style/doc_profile_text"
-                android:layout_width="175dp"
-                android:layout_height="39dp"
-                android:text="Ref ID:" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 

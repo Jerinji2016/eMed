@@ -144,14 +144,15 @@ public class PrescribeMedicineFragment extends Fragment implements OnItemSelecte
             public void onClick(View v) {
 
                 if (checkEmpty()) {
-                    if (!medArray.contains(medNameInput.getText().toString())) {
-                        final String medName = medNameInput.getText().toString().trim();
+                    final String medName = medNameInput.getText().toString().trim();
+
+                    if (!medArray.contains(medName.toLowerCase())) {
                         String medDoseDur = medDoseInput.getText().toString().trim() + "\n";
                         String dur = medDurInput.getText().toString().trim();
                         medDoseDur += (dur.equals("0")) ? "everyday" : dur + " days";
                         String medInstr = "", medTimeStr, medFoodStr;
 
-                        medArray.add(medName);
+                        medArray.add(medName.toLowerCase());
 
                         medTimeStr = String.valueOf(medTimeInput.getSelectedItem());
                         RadioButton mealRadio = view.findViewById(medMealInput.getCheckedRadioButtonId());

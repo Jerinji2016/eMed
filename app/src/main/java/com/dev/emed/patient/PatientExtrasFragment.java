@@ -290,7 +290,7 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
                         tbType.setPadding(0, 5, 0, 5);
                         tbType.setText((String) item.getValue());
                         tb.addView(tbType);
-                        tuberculosisTypes.add((String) item.getValue());
+                        tuberculosisTypes.add(((String) item.getValue()).toLowerCase());
 
                         tbType.setOnLongClickListener(new View.OnLongClickListener() {
                             @Override
@@ -314,7 +314,7 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
                         ccType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                         ccType.setText((String) item.getValue());
                         cc.addView(ccType);
-                        carcinomaTypes.add((String) item.getValue());
+                        carcinomaTypes.add(((String) item.getValue()).toLowerCase());
 
                         ccType.setOnLongClickListener(new View.OnLongClickListener() {
                             @Override
@@ -571,14 +571,14 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
                     final LinearLayout tb = view.findViewById(R.id.tuberculosis_types_container);
                     EditText tbAdd = view.findViewById(R.id.tb_text);
                     final String tbAddText = tbAdd.getText().toString().trim();
-                    if (!tuberculosisTypes.contains(tbAddText)) {
+                    if (!tuberculosisTypes.contains(tbAddText.toLowerCase())) {
                         //  Add Tb type to the linearout
                         final TextView tbType = new TextView(getContext());
                         tbType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                         tbType.setPadding(0, 5, 0, 5);
                         tbType.setText(tbAddText);
                         tb.addView(tbType);
-                        tuberculosisTypes.add(tbAddText);
+                        tuberculosisTypes.add(tbAddText.toLowerCase());
                         tbType.setOnLongClickListener(new View.OnLongClickListener() {
                             @Override
                             public boolean onLongClick(View v) {
@@ -597,13 +597,13 @@ public class PatientExtrasFragment extends Fragment implements View.OnClickListe
                     final LinearLayout cc = view.findViewById(R.id.carcinoma_type_container);
                     EditText ccAdd = view.findViewById(R.id.cc_text);
                     final String ccAddText = ccAdd.getText().toString().trim();
-                    if (!carcinomaTypes.contains(ccAddText)) {
+                    if (!carcinomaTypes.contains(ccAddText.toLowerCase())) {
                         final TextView ccType = new TextView(getContext());
                         ccType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                         ccType.setPadding(0, 5, 0, 5);
                         ccType.setText(ccAddText);
                         cc.addView(ccType);
-                        carcinomaTypes.add(ccAddText);
+                        carcinomaTypes.add(ccAddText.toLowerCase());
                         ccType.setOnLongClickListener(new View.OnLongClickListener() {
                             @Override
                             public boolean onLongClick(View v) {

@@ -53,7 +53,6 @@
                         android:id="@+id/med_ptn_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="sfsd"
                         android:layout_weight="1" />
                 </LinearLayout>
 
@@ -76,8 +75,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:inputType="number"
-                        android:text="32" />
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -150,8 +148,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="eg. Acetaminophen"
-                        android:text="water" />
+                        android:hint="eg. Acetaminophen" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -173,9 +170,7 @@
                         android:id="@+id/med_dose"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="eg. 650mg"
-                        android:text="1 ltr" />
+                        android:layout_weight="1" />
                 </LinearLayout>
 
                 <LinearLayout
