@@ -10,7 +10,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * Created by Ahsen Saeed on 1/10/2018.
+ * Author: Jerinji2016
  */
 
 public class EncryptionHelper {
