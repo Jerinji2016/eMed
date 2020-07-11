@@ -110,7 +110,6 @@
             android:ems="10"
             android:hint="@string/user_name"
             android:inputType="textPersonName"
-            android:text="jerin"
             android:textAlignment="center"
             android:textColor="#fff"
             android:textColorHint="#b3b1b1" />
@@ -124,7 +123,6 @@
             android:ems="10"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:text="j"
             android:textAlignment="center"
             android:textColor="#fff"
             android:textColorHint="#B3B1B1"
